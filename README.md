@@ -1,6 +1,6 @@
-<h1 align="center">cub3d</h1>
+<h1 align="center">Cub3d</h1>
 
-<h2>Our first RayCaster with miniLibX</h2>
+<h2 align="center">Our first RayCaster with miniLibX</h2>
 
 # Summary :
 
