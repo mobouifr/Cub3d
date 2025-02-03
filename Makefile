@@ -1,14 +1,13 @@
-NAME =  cub3D
+NAME = cub3D
 
-SRC =   main.c
+SRC = main.c
 
-CC =    cc 
+CC = cc
+CFLAGS = -Werror -Wextra -Wall
 
-CFLAGS =    -Werror -Wextra -Wall
+OBJ = $(SRC:.c=.o)
 
-OBJ =   $(SRC:.c=.o)
-
-all:   $(NAME)
+all: $(NAME)
 
 $(NAME): $(OBJ)
 	$(CC) $(CFLAGS) $(OBJ) -Lmlx_linux -lmlx_Linux -L/usr/lib -Imlx_linux -lXext -lX11 -lm -lz -o $(NAME)
