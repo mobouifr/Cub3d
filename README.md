@@ -1,2 +1,2 @@
 # cub3d
-DABADABA!!!!!!!!!!!
+<h1>Our first RayCaster with miniLibX</h1>
