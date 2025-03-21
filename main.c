@@ -162,6 +162,21 @@ void init_mlx(t_data *data)
     mlx_put_image_to_window(data->mlx->mlx, data->mlx->win, data->mlx->img, 0, 0);
     return;
 }
+bool can_move_to(t_map *map, int x, int y) {
+    if (x < 0 || x >= map->width || y < 0 || y >= map->height) {
+        return false;
+    }
+    return map->map[y][x] != '1';
+}
+
+void move_player(t_player *player, t_map *map, int dx, int dy) {
+    int new_x = player->player_x + dx;
+    int new_y = player->player_y + dy;
+    if (can_move_to(map, new_x, new_y)) {
+        player->player_x = new_x;
+        player->player_y = new_y;
+    }
+}
 
 int close_window(t_data *data)
 {
@@ -171,6 +186,46 @@ int close_window(t_data *data)
     return (0);
 }
 
+void draw_square(t_data *data, int x, int y, int color, int square_size)
+{
+    int i, j;
+
+    for (i = 0; i < square_size; i++)
+    {
+        for (j = 0; j < square_size; j++)
+        {
+            if (i == 0 || j == 0 || i == square_size - 1 || j == square_size - 1)
+                mlx_pixel_put(data->mlx->mlx, data->mlx->win, x + j, y + i, 0x000000); // Draw border
+            else
+                mlx_pixel_put(data->mlx->mlx,data->mlx->win, x + j, y + i, color);
+        }
+    }
+}
+void draw_map(t_data *data)
+{
+    int i, j;
+    int x, y;
+    int square_width = SCREEN_WIDTH / data->map->width;
+    int square_height = SCREEN_HEIGHT / data->map->height;
+    int square_size = (square_width < square_height) ? square_width : square_height;
+
+    // Clear the window before drawing
+    mlx_clear_window(data->mlx->mlx, data->mlx->win);
+
+    for (i = 0; i < data->map->height; i++)
+    {
+        for (j = 0; j < data->map->width; j++)
+        {
+            x = j * square_size;
+            y = i * square_size;
+            if (data->map->map[i][j] == '1')
+                draw_square(data, x, y, 0x00FF00, square_size); // Green for walls
+            else if (data->map->map[i][j] == '0')
+                draw_square(data, x, y, 0xFFFFFF, square_size); // White for empty space
+        }
+    }
+    draw_square(data, data->player->player_x * square_size, data->player->player_y * square_size, 0xFF0000, square_size / 2);
+}
 int key_press(int keycode, t_data *data)
 {
     if (keycode == 65307) // Escape key
@@ -198,47 +253,9 @@ int key_press(int keycode, t_data *data)
     return (0);
 }
 
-void draw_square(t_data *data, int x, int y, int color, int square_size)
-{
-    int i, j;
 
-    for (i = 0; i < square_size; i++)
-    {
-        for (j = 0; j < square_size; j++)
-        {
-            if (i == 0 || j == 0 || i == square_size - 1 || j == square_size - 1)
-                mlx_pixel_put(data->mlx->mlx, data->mlx->win, x + j, y + i, 0x000000); // Draw border
-            else
-                mlx_pixel_put(data->mlx->mlx,data->mlx->win, x + j, y + i, color);
-        }
-    }
-}
 
-void draw_map(t_data *data)
-{
-    int i, j;
-    int x, y;
-    int square_width = SCREEN_WIDTH / data->map->width;
-    int square_height = SCREEN_HEIGHT / data->map->height;
-    int square_size = (square_width < square_height) ? square_width : square_height;
 
-    // Clear the window before drawing
-    mlx_clear_window(data->mlx->mlx, data->mlx->win);
-
-    for (i = 0; i < data->map->height; i++)
-    {
-        for (j = 0; j < data->map->width; j++)
-        {
-            x = j * square_size;
-            y = i * square_size;
-            if (data->map->map[i][j] == '1')
-                draw_square(data, x, y, 0x00FF00, square_size); // Green for walls
-            else if (data->map->map[i][j] == '0')
-                draw_square(data, x, y, 0xFFFFFF, square_size); // White for empty space
-        }
-    }
-    draw_square(data, data->player->player_x * square_size, data->player->player_y * square_size, 0xFF0000, square_size / 2);
-}
 
 void start_game(t_data *data)
 {
@@ -250,21 +267,6 @@ void start_game(t_data *data)
     return;
 }
 
-bool can_move_to(t_map *map, int x, int y) {
-    if (x < 0 || x >= map->width || y < 0 || y >= map->height) {
-        return false;
-    }
-    return map->map[y][x] != '1';
-}
-
-void move_player(t_player *player, t_map *map, int dx, int dy) {
-    int new_x = player->player_x + dx;
-    int new_y = player->player_y + dy;
-    if (can_move_to(map, new_x, new_y)) {
-        player->player_x = new_x;
-        player->player_y = new_y;
-    }
-}
 
 int main(int ac, char **av)
 {
