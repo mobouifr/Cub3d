@@ -1,7 +1,7 @@
 NAME = cub3D
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror
-MLX = -lmlx -framework OpenGL -framework AppKit
+MLX = -lmlx -lXext -lX11 -lm -lbsd
 
 SRCS = main.c \
        get_next_line/get_next_line.c \
