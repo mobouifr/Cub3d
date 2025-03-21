@@ -1,33 +1,25 @@
 NAME = cub3D
+CC = gcc
+CFLAGS = -Wall -Wextra -Werror
+MLX = -lmlx -framework OpenGL -framework AppKit
 
-SRC = main.c
+SRCS = main.c \
+       get_next_line/get_next_line.c \
+       get_next_line/get_next_line_utils.c
 
-CC = cc
-CFLAGS = #-Werror -Wextra -Wall
-
-OBJ = $(SRC:.c=.o)
-
-# Directories for miniLibX
-MLX_DIR = mlx_linux
-MLX_LIB = -lmlx_Linux
-
-# Libraries
-LIBS = -L$(MLX_DIR) $(MLX_LIB) -L/usr/lib -lXext -lX11 -lm -lz
+OBJS = $(SRCS:.c=.o)
 
 all: $(NAME)
 
-$(NAME): $(OBJ)
-	$(CC) $(CFLAGS) $(OBJ) $(LIBS) -o $(NAME)
-
-%.o: %.c
-	$(CC) $(CFLAGS) -I/usr/include -I$(MLX_DIR) -O3 -c $< -o $@
+$(NAME): $(OBJS)
+	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(MLX)
 
 clean:
-	rm -rf $(OBJ)
+	rm -f $(OBJS)
 
 fclean: clean
-	rm -rf $(NAME)
+	rm -f $(NAME)
 
 re: fclean all
 
-.SECONDARY: $(OBJ)
+.PHONY: all clean fclean re
