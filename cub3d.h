@@ -1,8 +1,8 @@
 #ifndef CUB3D_H
 # define CUB3D_H
 
-# define SCREEN_WIDTH 1900
-# define SCREEN_HEIGHT 1000
+# define SCREEN_WIDTH 600
+# define SCREEN_HEIGHT 600
 # define FOV 60
 # define TILE_SIZE 60
 # define ROTATE_SPEED 0.045

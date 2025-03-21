@@ -170,7 +170,6 @@ int close_window(t_data *data)
 
 int key_press(int keycode, t_data *data)
 {
-    printf("Key pressed: %d\n", keycode);
     if (keycode == 65307)
     {
         printf("Exited Game!\n");
@@ -190,7 +189,7 @@ void draw_square(t_data *data, int x, int y, int color, int square_size)
             if (i == 0 || j == 0 || i == square_size - 1 || j == square_size - 1)
                 mlx_pixel_put(data->mlx->mlx, data->mlx->win, x + j, y + i, 0x000000); // Draw border
             else
-                mlx_pixel_put(data->mlx->mlx, x + j, y + i, color);
+                mlx_pixel_put(data->mlx->mlx,data->mlx->win, x + j, y + i, color);
         }
     }
 }
