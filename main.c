@@ -1,4 +1,7 @@
 #include "cub3d.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
 
 int read_lines(int fd)
 {
@@ -170,11 +173,28 @@ int close_window(t_data *data)
 
 int key_press(int keycode, t_data *data)
 {
-    if (keycode == 65307)
+    if (keycode == 65307) // Escape key
     {
         printf("Exited Game!\n");
         close_window(data);
     }
+    else if (keycode == 'w') // Move up
+    {
+        move_player(data->player, data->map, 0, -1);
+    }
+    else if (keycode == 'a') // Move left
+    {
+        move_player(data->player, data->map, -1, 0);
+    }
+    else if (keycode == 's') // Move down
+    {
+        move_player(data->player, data->map, 0, 1);
+    }
+    else if (keycode == 'd') // Move right
+    {
+        move_player(data->player, data->map, 1, 0);
+    }
+    draw_map(data); // Redraw the map with the new player position
     return (0);
 }
 
@@ -202,6 +222,9 @@ void draw_map(t_data *data)
     int square_height = SCREEN_HEIGHT / data->map->height;
     int square_size = (square_width < square_height) ? square_width : square_height;
 
+    // Clear the window before drawing
+    mlx_clear_window(data->mlx->mlx, data->mlx->win);
+
     for (i = 0; i < data->map->height; i++)
     {
         for (j = 0; j < data->map->width; j++)
@@ -225,6 +248,22 @@ void start_game(t_data *data)
     mlx_hook(data->mlx->win, 17, 0, close_window, data); // Listen for window close events
     mlx_loop(data->mlx->mlx);
     return;
+}
+
+bool can_move_to(t_map *map, int x, int y) {
+    if (x < 0 || x >= map->width || y < 0 || y >= map->height) {
+        return false;
+    }
+    return map->map[y][x] != '1';
+}
+
+void move_player(t_player *player, t_map *map, int dx, int dy) {
+    int new_x = player->player_x + dx;
+    int new_y = player->player_y + dy;
+    if (can_move_to(map, new_x, new_y)) {
+        player->player_x = new_x;
+        player->player_y = new_y;
+    }
 }
 
 int main(int ac, char **av)
