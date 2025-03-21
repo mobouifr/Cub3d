@@ -187,7 +187,10 @@ void draw_square(t_data *data, int x, int y, int color, int square_size)
     {
         for (j = 0; j < square_size; j++)
         {
-            mlx_pixel_put(data->mlx->mlx, data->mlx->win, x + j, y + i, color);
+            if (i == 0 || j == 0 || i == square_size - 1 || j == square_size - 1)
+                mlx_pixel_put(data->mlx->mlx, data->mlx->win, x + j, y + i, 0x000000); // Draw border
+            else
+                mlx_pixel_put(data->mlx->mlx, data->mlx->win, x + j, y + i, color);
         }
     }
 }
@@ -207,7 +210,7 @@ void draw_map(t_data *data)
             x = j * square_size;
             y = i * square_size;
             if (data->map->map[i][j] == '1')
-                draw_square(data, x, y, 0x00FF00, square_size); // Black for walls
+                draw_square(data, x, y, 0x00FF00, square_size); // Green for walls
             else if (data->map->map[i][j] == '0')
                 draw_square(data, x, y, 0xFFFFFF, square_size); // White for empty space
         }
