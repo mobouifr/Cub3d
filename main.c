@@ -215,6 +215,7 @@ void draw_map(t_data *data)
     int square_size = (square_width < square_height) ? square_width : square_height;
 
     // Clear the image before drawing
+    int bpp, size_line, endian;
     char *pixel = mlx_get_data_addr(data->mlx->img, &bpp, &size_line, &endian);
     memset(pixel, 0, SCREEN_WIDTH * SCREEN_HEIGHT * (bpp / 8));
 
