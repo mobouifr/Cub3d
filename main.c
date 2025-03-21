@@ -169,10 +169,12 @@ bool can_move_to(t_map *map, int x, int y) {
     return map->map[y][x] != '1';
 }
 
-void move_player(t_player *player, t_map *map, int dx, int dy) {
-    int new_x = player->player_x + dx;
-    int new_y = player->player_y + dy;
-    if (can_move_to(map, new_x, new_y)) {
+void move_player(t_player *player, t_map *map, double dx, double dy) {
+    double new_x = player->player_x + dx;
+    double new_y = player->player_y + dy;
+    int map_x = (int)new_x;
+    int map_y = (int)new_y;
+    if (can_move_to(map, map_x, map_y)) {
         player->player_x = new_x;
         player->player_y = new_y;
     }
@@ -231,12 +233,13 @@ void draw_map(t_data *data)
                 draw_square(data, x, y, 0xFFFFFF, square_size); // White for empty space
         }
     }
-    draw_square(data, data->player->player_x * square_size, data->player->player_y * square_size, 0xFF0000, square_size / 2);
+    draw_square(data, (int)(data->player->player_x * square_size), (int)(data->player->player_y * square_size), 0xFF0000, square_size / 2);
     mlx_put_image_to_window(data->mlx->mlx, data->mlx->win, data->mlx->img, 0, 0);
 }
 
 int key_press(int keycode, t_data *data)
 {
+    double move_speed = 0.1; // Adjust the speed for smoother movement
     if (keycode == 65307) // Escape key
     {
         printf("Exited Game!\n");
@@ -244,19 +247,19 @@ int key_press(int keycode, t_data *data)
     }
     else if (keycode == 'w') // Move up
     {
-        move_player(data->player, data->map, 0, -1);
+        move_player(data->player, data->map, 0, -move_speed);
     }
     else if (keycode == 'a') // Move left
     {
-        move_player(data->player, data->map, -1, 0);
+        move_player(data->player, data->map, -move_speed, 0);
     }
     else if (keycode == 's') // Move down
     {
-        move_player(data->player, data->map, 0, 1);
+        move_player(data->player, data->map, 0, move_speed);
     }
     else if (keycode == 'd') // Move right
     {
-        move_player(data->player, data->map, 1, 0);
+        move_player(data->player, data->map, move_speed, 0);
     }
     draw_map(data); // Redraw the map with the new player position
     return (0);
