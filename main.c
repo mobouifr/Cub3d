@@ -66,7 +66,7 @@ void fill_map(t_data *data)
     }
 }
 
-void read_map_file(t_data *data)
+void read_map_file(t_data *data, const char *filename)
 {
     int i = 0;
     char *line;
@@ -76,7 +76,7 @@ void read_map_file(t_data *data)
     int buffer_index;
     int fd;
 
-    fd = open("./map.cub", O_RDONLY);
+    fd = open(filename, O_RDONLY);
     if (fd < 0)
     {
         perror("Error\nopen failed");
@@ -107,10 +107,10 @@ void read_map_file(t_data *data)
     close(fd);
 }
 
-void init_data(t_data *data)
+void init_data(t_data *data, const char *filename)
 {
     data->map = (t_map *)malloc(sizeof(t_map));
-    data->map->fd = open("./map.cub", O_RDONLY);
+    data->map->fd = open(filename, O_RDONLY);
     if (data->map->fd < 0)
     {
         perror("Error\nopen failed");
@@ -118,7 +118,7 @@ void init_data(t_data *data)
     }
     data->map->line_count = read_lines(data->map->fd);
     close(data->map->fd);
-    read_map_file(data);
+    read_map_file(data, filename);
     data->map->width = get_map_width(data->map->file[0]);
     data->map->height = get_map_height(data->map->file, data->map->line_count);
     fill_map(data);
@@ -227,10 +227,16 @@ void start_game(t_data *data)
     return;
 }
 
-int main()
+int main(int ac, char **av)
 {
+    if (ac != 2)
+    {
+        printf("Usage: %s <map_file>\n", av[0]);
+        return (1);
+    }
+
     t_data data;
-    init_data(&data);
+    init_data(&data, av[1]);
     start_game(&data);
     return (0);
 }
