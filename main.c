@@ -5,7 +5,7 @@ int read_lines(int fd)
     int line_count;
     char *line;
     line_count = 0;
-    while (get_next_line(fd, &line) > 0)
+    while (get_next_line(fd) > 0)
     {
         line_count++;
         free(line);
@@ -128,7 +128,7 @@ void init_data(t_data *data)
     data->mlx = (t_mlx *)malloc(sizeof(t_mlx));
 
     data->player->player_x = 5;
-    data->player->player_y = 5;
+    data->player->player_y = 4;
     data->mlx->mlx = NULL;
     data->mlx->win = NULL;
     data->mlx->img = NULL;
@@ -207,13 +207,12 @@ void draw_map(t_data *data)
             x = j * square_size;
             y = i * square_size;
             if (data->map->map[i][j] == '1')
-                draw_square(data, x, y, 0x000000, square_size); // Black for walls
+                draw_square(data, x, y, 0x00FF00, square_size); // Black for walls
             else if (data->map->map[i][j] == '0')
                 draw_square(data, x, y, 0xFFFFFF, square_size); // White for empty space
         }
     }
-    // Draw the player as a red square
-    draw_square(data, data->player->player_x * square_size, data->player->player_y * square_size, 0xFF0000, square_size);
+    draw_square(data, data->player->player_x * square_size, data->player->player_y * square_size, 0xFF0000, square_size / 2);
 }
 
 void start_game(t_data *data)
