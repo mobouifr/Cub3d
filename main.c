@@ -127,8 +127,8 @@ void init_data(t_data *data)
     data->ray = (t_ray *)malloc(sizeof(t_ray));
     data->mlx = (t_mlx *)malloc(sizeof(t_mlx));
 
-    data->player->player_x = 0;
-    data->player->player_y = 0;
+    data->player->player_x = 5;
+    data->player->player_y = 5;
     data->mlx->mlx = NULL;
     data->mlx->win = NULL;
     data->mlx->img = NULL;
@@ -179,10 +179,9 @@ int key_press(int keycode, t_data *data)
     return (0);
 }
 
-void draw_square(t_data *data, int x, int y, int color)
+void draw_square(t_data *data, int x, int y, int color, int square_size)
 {
     int i, j;
-    int square_size = 10; // Size of each square
 
     for (i = 0; i < square_size; i++)
     {
@@ -197,21 +196,24 @@ void draw_map(t_data *data)
 {
     int i, j;
     int x, y;
+    int square_width = SCREEN_WIDTH / data->map->width;
+    int square_height = SCREEN_HEIGHT / data->map->height;
+    int square_size = (square_width < square_height) ? square_width : square_height;
 
     for (i = 0; i < data->map->height; i++)
     {
         for (j = 0; j < data->map->width; j++)
         {
-            x = j * 10; // Adjust the multiplier to change the spacing
-            y = i * 10; // Adjust the multiplier to change the spacing
+            x = j * square_size;
+            y = i * square_size;
             if (data->map->map[i][j] == '1')
-                draw_square(data, x, y, 0x000000); // Black for walls
+                draw_square(data, x, y, 0x000000, square_size); // Black for walls
             else if (data->map->map[i][j] == '0')
-                draw_square(data, x, y, 0xFFFFFF); // White for empty space
+                draw_square(data, x, y, 0xFFFFFF, square_size); // White for empty space
         }
     }
     // Draw the player as a red square
-    draw_square(data, data->player->player_x * 10, data->player->player_y * 10, 0xFF0000);
+    draw_square(data, data->player->player_x * square_size, data->player->player_y * square_size, 0xFF0000, square_size);
 }
 
 void start_game(t_data *data)
