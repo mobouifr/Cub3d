@@ -189,18 +189,23 @@ int close_window(t_data *data)
 void draw_square(t_data *data, int x, int y, int color, int square_size)
 {
     int i, j;
+    char *pixel;
+    int bpp, size_line, endian;
 
+    pixel = mlx_get_data_addr(data->mlx->img, &bpp, &size_line, &endian);
     for (i = 0; i < square_size; i++)
     {
         for (j = 0; j < square_size; j++)
         {
+            int pixel_index = ((y + i) * size_line) + ((x + j) * (bpp / 8));
             if (i == 0 || j == 0 || i == square_size - 1 || j == square_size - 1)
-                mlx_pixel_put(data->mlx->mlx, data->mlx->win, x + j, y + i, 0x000000); // Draw border
+                *(int *)(pixel + pixel_index) = 0x000000; // Draw border
             else
-                mlx_pixel_put(data->mlx->mlx,data->mlx->win, x + j, y + i, color);
+                *(int *)(pixel + pixel_index) = color;
         }
     }
 }
+
 void draw_map(t_data *data)
 {
     int i, j;
@@ -209,8 +214,10 @@ void draw_map(t_data *data)
     int square_height = SCREEN_HEIGHT / data->map->height;
     int square_size = (square_width < square_height) ? square_width : square_height;
 
-    // Clear the window before drawing
+    // Clear the image before drawing
     mlx_clear_window(data->mlx->mlx, data->mlx->win);
+    mlx_destroy_image(data->mlx->mlx, data->mlx->img);
+    data->mlx->img = mlx_new_image(data->mlx->mlx, SCREEN_WIDTH, SCREEN_HEIGHT);
 
     for (i = 0; i < data->map->height; i++)
     {
@@ -225,7 +232,9 @@ void draw_map(t_data *data)
         }
     }
     draw_square(data, data->player->player_x * square_size, data->player->player_y * square_size, 0xFF0000, square_size / 2);
+    mlx_put_image_to_window(data->mlx->mlx, data->mlx->win, data->mlx->img, 0, 0);
 }
+
 int key_press(int keycode, t_data *data)
 {
     if (keycode == 65307) // Escape key
@@ -253,20 +262,29 @@ int key_press(int keycode, t_data *data)
     return (0);
 }
 
+int key_release(int keycode, t_data *data)
+{
+    // Handle key release events if needed
+    return (0);
+}
 
-
-
+int update(t_data *data)
+{
+    draw_map(data); // Continuously redraw the map
+    return (0);
+}
 
 void start_game(t_data *data)
 {
     init_mlx(data);
     draw_map(data); // Draw the map when the game starts
     mlx_hook(data->mlx->win, 2, 1L<<0, key_press, data); // Listen for key press events
+    mlx_hook(data->mlx->win, 3, 1L<<1, key_release, data); // Listen for key release events
+    mlx_loop_hook(data->mlx->mlx, update, data); // Continuously update the game
     mlx_hook(data->mlx->win, 17, 0, close_window, data); // Listen for window close events
     mlx_loop(data->mlx->mlx);
     return;
 }
-
 
 int main(int ac, char **av)
 {
