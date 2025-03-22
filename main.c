@@ -162,19 +162,23 @@ void init_mlx(t_data *data)
     mlx_put_image_to_window(data->mlx->mlx, data->mlx->win, data->mlx->img, 0, 0);
     return;
 }
-bool can_move_to(t_map *map, int x, int y) {
-    if (x < 0 || x >= map->width || y < 0 || y >= map->height) {
+bool can_move_to(t_map *map, int x, int y) 
+{
+    if (x < 0 || x >= map->width || y < 0 || y >= map->height) 
+    {
         return false;
     }
     return map->map[y][x] != '1';
 }
 
-void move_player(t_player *player, t_map *map, double dx, double dy) {
+void move_player(t_player *player, t_map *map, double dx, double dy) 
+{
     double new_x = player->player_x + dx;
     double new_y = player->player_y + dy;
     int map_x = (int)new_x;
     int map_y = (int)new_y;
-    if (can_move_to(map, map_x, map_y)) {
+    if (can_move_to(map, map_x, map_y)) 
+    {
         player->player_x = new_x;
         player->player_y = new_y;
     }
