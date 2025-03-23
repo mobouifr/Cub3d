@@ -4,7 +4,7 @@ SRC = main.c\
 		get_next_line/get_next_line.c\
 		get_next_line/get_next_line_utils.c
 
-CC = cc
+CC = cc -g3 -fsanitize=address
 CFLAGS = #-Werror -Wextra -Wall
 
 OBJ = $(SRC:.c=.o)
