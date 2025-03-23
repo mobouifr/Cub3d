@@ -1,13 +1,7 @@
 #ifndef CUB3D_H
 # define CUB3D_H
 
-#define MAP_ROWS 7
-#define MAP_COLS 23
-# define SCREEN_WIDTH 640
-# define SCREEN_HEIGHT 480
-#define TILE_SIZE_W (SCREEN_WIDTH / MAP_COLS)  // Tile size based on width
-#define TILE_SIZE_H (SCREEN_HEIGHT / MAP_ROWS) // Tile size based on height
-#define TILE_SIZE (TILE_SIZE_W < TILE_SIZE_H ? TILE_SIZE_W : TILE_SIZE_H)
+# define TILE_SIZE 32
 
 # include <stdio.h>
 # include <stdbool.h>
@@ -24,16 +18,20 @@ typedef struct s_player
 {
     double player_x;
     double player_y;
-    double dir_x;
-    double dir_y;
-    double plane_x;
-    double plane_y;
+    int radius;
+    int turn_dir;
+    int walk_dir;
+    int rot_angle;
+    int move_speed;
+    int rot_speed;
+
+    
 } t_player;
 
 typedef struct s_map
 {
-    int width;
-    int height;
+    int rows;
+    int cols;
     char **map;
 } t_map;
 
