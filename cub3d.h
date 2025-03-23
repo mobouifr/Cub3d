@@ -7,6 +7,8 @@
 # define TILE_SIZE 60
 # define ROTATE_SPEED 0.045
 # define MOVE_SPEED 4
+# define TILE_SIZE 32
+
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
@@ -25,6 +27,16 @@ typedef struct s_player
     int rot;
     int l_r;
     int u_d;
+    double player_x;
+    double player_y;
+    int radius;
+    int turn_dir;
+    int walk_dir;
+    int rot_angle;
+    int move_speed;
+    int rot_speed;
+
+    
 } t_player;
 
 typedef struct s_ray
@@ -33,12 +45,20 @@ typedef struct s_ray
     double distance;
     int flag;
 } t_ray;
+    int rows;
+    int cols;
+    char **map;
+} t_map;
 
 typedef struct s_mlx
 {
     void *mlx;
     void *win;
     void *img;
+    char *addr;
+    int bpp;
+    int line_length;
+    int endian;
 } t_mlx;
 typedef struct s_map
 {
@@ -60,6 +80,8 @@ typedef struct s_data
     t_mlx *mlx;
     t_player *player;
     t_ray *ray;
+
 } t_data;
+
 
 #endif
