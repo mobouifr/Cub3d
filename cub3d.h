@@ -19,14 +19,14 @@ typedef struct s_player
     double player_x;
     double player_y;
     int radius;
-    int turn_dir;
-    int walk_dir;
-    int rot_angle;
-    int move_speed;
-    int rot_speed;
+    int turn_dir; 
+    int walk_dir; 
+    double rot_angle; 
+    double move_speed;
+    double rot_speed;
 
-    
 } t_player;
+
 
 typedef struct s_map
 {
