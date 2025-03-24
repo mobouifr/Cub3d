@@ -216,56 +216,6 @@ void draw_line(t_data *data, int x1, int y1, int x2, int y2, int color)
     }
 }
 
-int is_walkable(t_data *data, int map_x, int map_y)
-{
-    if (map_x < 0 || map_x >= data->map->cols || map_y < 0 || map_y >= data->map->rows)
-        return (0); // Out of bounds, not walkable
-
-    return (data->map->map[map_y][map_x] == '0'); // Walkable space
-}
-
-
-
-void move_player(t_data *data)
-{
-    double move_step = data->player->walk_dir * data->player->move_speed;
-    double new_x = data->player->player_x + cos(data->player->rot_angle) * move_step;
-    double new_y = data->player->player_y + sin(data->player->rot_angle) * move_step;
-
-    int map_x = (int)(new_x);
-    int map_y = (int)(new_y);
-
-    // if (is_walkable(data, map_x, map_y))
-    // {
-        data->player->player_x = new_x;
-        data->player->player_y = new_y;
-    // }
-}
-
-
-
-void strafe_player(t_data *data, int direction)
-{
-    double move_step = direction * data->player->move_speed;
-    double new_x = data->player->player_x + cos(data->player->rot_angle + M_PI_2) * move_step;
-    double new_y = data->player->player_y + sin(data->player->rot_angle + M_PI_2) * move_step;
-
-    if (is_walkable(data, new_x, new_y))
-    {
-        data->player->player_x = new_x; 
-        data->player->player_y = new_y;
-    }
-}
-
-void rotate_player(t_data *data, int direction)
-{
-    data->player->rot_angle += direction * data->player->rot_speed;
-    if (data->player->rot_angle < 0)
-        data->player->rot_angle += 2 * M_PI;
-    if (data->player->rot_angle > 2 * M_PI)
-        data->player->rot_angle -= 2 * M_PI;
-}
-
 
 void draw_player_facing_line(t_data *data)
 {
@@ -292,8 +242,8 @@ void init_player_data(t_data *data)
     data->player->rot_angle = 0;
     data->player->turn_dir = 0;
     data->player->walk_dir = 0;
-    data->player->move_speed = 0.004;
-    data->player->rot_speed = 1 * (M_PI / 180);
+    data->player->move_speed = 2;
+    data->player->rot_speed = 2 * (M_PI / 180);
 }
 
 void mlx_start(t_data *data)
@@ -317,16 +267,32 @@ int close_window(t_data *data)
     exit(0);
     return (0);
 }
-
 int key_released(int keycode, t_data *data)
 {
-    if (keycode == 'w' || keycode == 's')
+    if (keycode == 'w')
         data->player->walk_dir = 0;
-    else if (keycode == 'a' || keycode == 'd')
+    else if (keycode == 'a')
+        data->player->turn_dir = 0;
+    else if (keycode == 's')
+        data->player->walk_dir = 0;
+    else if (keycode == 'd')
         data->player->turn_dir = 0;
     return 0;
 }
-
+int key_pressed(int keycode, t_data *data)
+{
+    if (keycode == 65307)
+        close_window(data);
+    if (keycode == 'w')
+        data->player->walk_dir = 1;
+    else if (keycode == 'a')
+        data->player->turn_dir = -1;
+    else if (keycode == 's')
+        data->player->walk_dir = -1;
+    else if (keycode == 'd')
+        data->player->turn_dir = 1;
+    return 0;
+}
 
 void draw_map(t_data *data, char **map, int rows, int cols)
 {
@@ -373,41 +339,67 @@ void draw_map(t_data *data, char **map, int rows, int cols)
 
 void draw_player(t_data *data)
 {
-    if (!data || !data->player || !data->map)
-    {
-        printf("Error: Null pointer in draw_player function.\n");
-        return;
-    }
+    // Get player position and center the screen
+    int screen_width = data->map->cols * TILE_SIZE;
+    int screen_height = data->map->rows * TILE_SIZE;
 
-    // Get player position in pixels
     int player_x = data->player->player_x * TILE_SIZE;
     int player_y = data->player->player_y * TILE_SIZE;
 
-    // Draw the player as a red circle
-    int radius = 5; // Adjusted radius for visibility
+    // Debug: Print player position
+    printf("Player Position (in tiles): (%f, %f)\n", data->player->player_x, data->player->player_y);
+
+    // Calculate screen-centered player position
+    int screen_center_x = screen_width / 2;
+    int screen_center_y = screen_height / 2;
+
+    int player_screen_x = screen_center_x - player_x;
+    int player_screen_y = screen_center_y - player_y;
+
+    // Debug: Print screen-centered player position
+    printf("Player Screen Position: (%d, %d)\n", player_screen_x, player_screen_y);
+
+    // Draw the player as a red circle (indicating the player's position)
+    int radius = 10; // Radius of the circle
     int px, py;
     for (py = -radius; py <= radius; py++)
     {
         for (px = -radius; px <= radius; px++)
         {
-            if (px * px + py * py <= radius * radius)
+            if (px * px + py * py <= radius * radius) // Check if the point lies within the circle
             {
-                my_mlx_pixel_put(data, player_x + px, player_y + py, 0xFF0000);
+                int screen_x = player_screen_x + px;
+                int screen_y = player_screen_y + py;
+                if (screen_x >= 0 && screen_x < screen_width && screen_y >= 0 && screen_y < screen_height)
+                {
+                    my_mlx_pixel_put(data, screen_x, screen_y, 0xFF0000); // Red color for the player
+                }
             }
         }
     }
-    // Draw player's direction line
+
+    // Debug: Check the angle (rotation) of the player
+    printf("Player Rotation Angle: %d\n", data->player->rot_angle);
+
+    // Draw a line representing the direction the player is facing
     double angle = data->player->rot_angle; // Player's rotation angle
-    int line_length = 20;  // Reduced length for better clarity
+    int line_length = 30;  // Length of the line representing the facing direction
 
-    int line_end_x = player_x + cos(angle) * line_length;
-    int line_end_y = player_y + sin(angle) * line_length;
+    int line_end_x = player_screen_x + cos(angle) * line_length;
+    int line_end_y = player_screen_y + sin(angle) * line_length;
 
-    draw_line(data, player_x, player_y, line_end_x, line_end_y, 0xFF00FF);
+    // Draw the line (debugging the line's coordinates)
+    printf("Drawing line from (%d, %d) to (%d, %d)\n", player_screen_x, player_screen_y, line_end_x, line_end_y);
+
+    // Draw the line
+    my_mlx_pixel_put(data, player_screen_x, player_screen_y, 0x00FF00); // Green for the start of the line (player's position)
+    my_mlx_pixel_put(data, line_end_x, line_end_y, 0x00FF00); // Green for the end of the line (direction the player is facing)
 }
+
 
 void draw(t_data *data)
 {
+    mlx_clear_window(data->mlx->mlx, data->mlx->win);
 
     draw_map(data, data->map->map, data->map->rows, data->map->cols);
 
@@ -415,26 +407,6 @@ void draw(t_data *data)
 
     mlx_put_image_to_window(data->mlx->mlx, data->mlx->win, data->mlx->img, 0, 0);
 }
-
-
-int handle_keypress(int keycode, t_data *data)
-{
-    if(keycode == 65307)
-        close_window(data);
-    if (keycode == 'w') // Move forward
-        data->player->walk_dir = 1;
-    else if (keycode == 's') // Move backward
-        data->player->walk_dir = -1;
-    else if (keycode == 'a') // Rotate left
-        data->player->turn_dir = -1;
-    else if (keycode == 'd') // Rotate right
-        data->player->turn_dir = 1;
-    
-    return (0);
-}
-
-
-
 
 char **read_map_from_file(char *filename, int *rows, int *cols)
 {
@@ -549,20 +521,26 @@ int update(t_data *data)
 
 int game_loop(t_data *data)
 {
-    if (data->player->walk_dir != 0)
-        move_player(data);
+    // Update the player's rotation if there's input
     if (data->player->turn_dir != 0)
-        rotate_player(data, data->player->turn_dir);
+        data->player->rot_angle += data->player->turn_dir * data->player->rot_speed;
 
-    draw(data); // Redraw the map and player
-    return (0);
+    // Normalize the rotation angle to keep it within 0 to 2*PI (0-360 degrees)
+    if (data->player->rot_angle > 2 * M_PI)
+        data->player->rot_angle -= 2 * M_PI;
+    if (data->player->rot_angle < 0)
+        data->player->rot_angle += 2 * M_PI;
+
+    // Redraw the map and the player after rotation update
+    draw(data);  // Clear and redraw the map and player
+
+    return 0; // MLX expects a return value
 }
-
 
 
 void start_game(t_data *data)
 {
-    mlx_hook(data->mlx->win, 2, 1L << 0, handle_keypress, data);
+    mlx_hook(data->mlx->win, 2, 1L << 0, key_pressed, data);  // Handle key presses
     mlx_hook(data->mlx->win, 3, 1L << 1, key_released, data); // Handle key releases
     mlx_hook(data->mlx->win, 17, 0, close_window, data);      // Handle window close
     mlx_loop_hook(data->mlx->mlx, game_loop, data); 
@@ -582,8 +560,8 @@ void initialize_data(t_data *data)
         printf("Memory allocation failed\n");
         exit(1);
     }
-    init_player_data(data);
 
+    init_player_data(data);
 }
 
 
@@ -600,16 +578,24 @@ int main(int ac, char **av)
         printf("Usage: ./program <map_file>\n");
         return 1;
     }
+
     t_data data;
     init_data(&data, av[1]);
     initialize_data(&data);
+
+    // Read map and assign to data.map->map
     data.map->map = read_map_from_file(argv[1], &data.map->rows, &data.map->cols);
+
+    // Start MLX and game loop
     mlx_start(&data);
     start_game(&data);
+
+    // Free the map memory after use
     for (int i = 0; i < data.map->rows; i++)
     {
         free(data.map->map[i]);
     }
     free(data.map->map);
+
     return 0;
 }
