@@ -1,4 +1,5 @@
 #include "cub3d.h"
+
 void my_mlx_pixel_put(t_data *data, int x, int y, int color)
 {
     char *dst;
@@ -6,6 +7,7 @@ void my_mlx_pixel_put(t_data *data, int x, int y, int color)
     dst = data->mlx->addr + (y * data->mlx->line_length + x * (data->mlx->bpp / 8));
     *(unsigned int*) dst = color;
 }
+
 void draw_line(t_data *data, int x1, int y1, int x2, int y2, int color)
 {
     int dx = abs(x2 - x1);
@@ -16,11 +18,9 @@ void draw_line(t_data *data, int x1, int y1, int x2, int y2, int color)
 
     while (1)
     {
-        my_mlx_pixel_put(data, x1, y1, color);  // Draw pixel at (x1, y1)
-        
+        my_mlx_pixel_put(data, x1, y1, color);
         if (x1 == x2 && y1 == y2)
             break;
-        
         int e2 = err * 2;
         if (e2 > -dy)
         {
@@ -43,29 +43,22 @@ int is_walkable(t_data *data, int map_x, int map_y)
     return (data->map->map[map_y][map_x] == '0'); // Walkable space
 }
 
-
-
 void move_player(t_data *data)
 {
     double move_step = data->player->walk_dir * data->player->move_speed;
     double new_x = data->player->player_x + cos(data->player->rot_angle) * move_step;
     double new_y = data->player->player_y + sin(data->player->rot_angle) * move_step;
 
-    int map_x = (int)(new_x);
-    int map_y = (int)(new_y);
-
-    // if (is_walkable(data, map_x, map_y))
-    // {
+    if (is_walkable(data, new_x, new_y))
+    {
         data->player->player_x = new_x;
         data->player->player_y = new_y;
-    // }
+    }
 }
-
-
 
 void strafe_player(t_data *data, int direction)
 {
-    double move_step = direction * data->player->move_speed;
+    double move_step = direction * data->player->move_speed * 20;
     double new_x = data->player->player_x + cos(data->player->rot_angle + M_PI_2) * move_step;
     double new_y = data->player->player_y + sin(data->player->rot_angle + M_PI_2) * move_step;
 
@@ -79,11 +72,14 @@ void strafe_player(t_data *data, int direction)
 void rotate_player(t_data *data, int direction)
 {
     data->player->rot_angle += direction * data->player->rot_speed;
+
+    // Ensure the rotation stays within 0 to 2 * PI
     if (data->player->rot_angle < 0)
         data->player->rot_angle += 2 * M_PI;
     if (data->player->rot_angle > 2 * M_PI)
         data->player->rot_angle -= 2 * M_PI;
 }
+
 
 
 void draw_player_facing_line(t_data *data)
@@ -111,8 +107,8 @@ void init_player_data(t_data *data)
     data->player->rot_angle = 0;
     data->player->turn_dir = 0;
     data->player->walk_dir = 0;
-    data->player->move_speed = 0.004;
-    data->player->rot_speed = 1 * (M_PI / 180);
+    data->player->move_speed = 0.02;
+    data->player->rot_speed = 30  * (M_PI / 180);
 }
 
 void mlx_start(t_data *data)
@@ -142,8 +138,13 @@ int key_released(int keycode, t_data *data)
         data->player->walk_dir = 0;
     else if (keycode == 'a' || keycode == 'd')
         data->player->turn_dir = 0;
+    else if (keycode == 65362 || keycode == 65364)
+        data->player->walk_dir = 0;
+    
     return 0;
 }
+
+
 
 
 void draw_map(t_data *data, char **map, int rows, int cols)
@@ -237,19 +238,49 @@ void draw(t_data *data)
 
 int handle_keypress(int keycode, t_data *data)
 {
-    if(keycode == 65307)
-        close_window(data);
     if (keycode == 'w') // Move forward
+    {
         data->player->walk_dir = 1;
+        move_player(data);
+    }
     else if (keycode == 's') // Move backward
+    {
         data->player->walk_dir = -1;
-    else if (keycode == 'a') // Rotate left
-        data->player->turn_dir = -1;
-    else if (keycode == 'd') // Rotate right
-        data->player->turn_dir = 1;
-    
-    return (0);
+        move_player(data);
+    }
+    else if (keycode == 'a') // Strafe left
+    {
+        strafe_player(data, -1);
+    }
+    else if (keycode == 'd') // Strafe right
+    {
+        strafe_player(data, 1);
+    }
+    else if (keycode == 65361) // Rotate left (Left Arrow)
+    {
+        rotate_player(data, -1); // Counter-clockwise
+    }
+    else if (keycode == 65363) // Rotate right (Right Arrow)
+    {
+        rotate_player(data, 1); // Clockwise
+    }
+    else if (keycode == 65362) // Rotate forward (Up Arrow)
+    {
+        rotate_player(data, -1); // Rotate clockwise
+    }
+    else if (keycode == 65364) // Rotate backward (Down Arrow)
+    {
+        rotate_player(data, 1); // Rotate counter-clockwise
+    }
+    else if (keycode == 65307) // ESC key (exit game)
+    {
+        close_window(data); // Exit game
+    }
+
+    draw(data); // Redraw the scene after movement or rotation
+    return 0;
 }
+
 
 
 
