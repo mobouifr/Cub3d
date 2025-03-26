@@ -43,6 +43,8 @@ typedef struct s_mlx
     char *addr;
     int bpp;
     int line_length;
+    int win_width;
+    int win_height;
     int endian;
 } t_mlx;
 
@@ -54,5 +56,9 @@ typedef struct s_data
 
 } t_data;
 
-
+void draw_map(t_data *data, char **map, int rows, int cols);
+char **read_map_from_file(char *filename, int *rows, int *cols);
+void mlx_start(t_data *data);
+int close_window(t_data *data);
+void my_mlx_pixel_put(t_data *data, int x, int y, int color);
 #endif
