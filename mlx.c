@@ -2,14 +2,6 @@
 
 void mlx_start(t_data *data)
 {
-    // Dynamically calculate the screen dimensions
-    // int screen_width = data->map->cols * TILE_SIZE;
-    // int screen_height = data->map->rows * TILE_SIZE;
-
-    // data->mlx->mlx = mlx_init();
-    // data->mlx->win = mlx_new_window(data->mlx->mlx, screen_width, screen_height, "cub3d");
-    // data->mlx->img = mlx_new_image(data->mlx->mlx, screen_width, screen_height);
-    // data->mlx->addr = mlx_get_data_addr(data->mlx->img, &data->mlx->bpp, &data->mlx->line_length, &data->mlx->endian);
     data->mlx->win_width = 800; // Set the window width
     data->mlx->win_height = 600; // Set the window height
     data->mlx->mlx = mlx_init();
