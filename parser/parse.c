@@ -1,5 +1,17 @@
 #include "parser.h"
 
+int	line_is_empty(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (ft_isspace(str[i]))
+		i++;
+	if (str[i] == '\0')
+		return (1);
+	return (0);
+}
+
 void	parse_rgb_color(int	*color_code, char *str)
 {
 	char **rgb;
@@ -32,6 +44,11 @@ void    parse_line(int fd, t_game *gamevar)
 	line = get_next_line(fd);
     while (line != NULL)
     {
+		if (line_is_empty(line))
+		{
+			line = get_next_line(fd);
+			continue;
+		}
 		has_direction(gamevar);
 		if (gamevar->state == INITIAL || gamevar->state == PARSE_DIRECTION_STATE)
 		{
@@ -75,7 +92,7 @@ void    parse_line(int fd, t_game *gamevar)
 		}
 		if (gamevar->state == PARSE_MAP_STATE)
 		{
-			
+			//map_parsing loop willl be
 		}
 		line = get_next_line(fd);
     }
@@ -123,8 +140,8 @@ int parser(int argc, char **argv)
 	gamevar = malloc(sizeof(t_game));
 	if (!gamevar)
    		return (write(2, "Error\n", 6), 1);
-    var_init(&gamevar);
-    fd = open("map.cub", O_RDONLY);
+    var_init(gamevar);
+    fd = open(argv[1], O_RDONLY);
     if (fd == -1 /*|| !valid_extention_check()*/)
     {
         write(2, "Error\n", 6);
