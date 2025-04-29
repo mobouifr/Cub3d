@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mamir <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 11:47:04 by mamir             #+#    #+#             */
-/*   Updated: 2024/02/17 11:47:06 by mamir            ###   ########.fr       */
+/*   Updated: 2025/04/29 10:40:15 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "../cub3d.h"
 
 char	*ft_rest(char *statik)
 {

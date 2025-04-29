@@ -3,6 +3,10 @@
 
 # define TILE_SIZE 32
 
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 5
+# endif
+
 # include <stdio.h>
 # include <stdbool.h>
 # include <stdlib.h>
@@ -12,7 +16,7 @@
 # include <math.h>
 # include <limits.h>
 # include <mlx.h>
-# include "get_next_line/get_next_line.h"
+# include "libft/libft.h"
 
 typedef struct s_player
 {
@@ -61,4 +65,6 @@ char **read_map_from_file(char *filename, int *rows, int *cols);
 void mlx_start(t_data *data);
 int close_window(t_data *data);
 void my_mlx_pixel_put(t_data *data, int x, int y, int color);
+char	*get_next_line(int fd);
+
 #endif

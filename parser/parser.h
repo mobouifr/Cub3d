@@ -3,7 +3,15 @@
 
 # include "../cub3d.h"
 
-typedef struct s_game
+
+typedef enum    e_state
+{
+	INITIAL,
+	PARSE_DIRECTION_STATE,
+	PARSE_MAP_STATE
+}			    t_state;
+
+typedef struct  s_game
 {
     char *no_path;
     char *so_path;
@@ -23,6 +31,7 @@ typedef struct s_game
     int has_ea;
     int has_floor;
     int has_ceiling;
-} t_game;
+	t_state	state;
+}               t_game;
 
 #endif
