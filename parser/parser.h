@@ -21,6 +21,7 @@ typedef struct  s_game
     int floor_color[3];
     int ceiling_color[3];
     char **map;
+    int map_first_row_position;
     int map_width;
     int map_height;
     int player_x;

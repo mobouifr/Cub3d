@@ -62,13 +62,30 @@ int	has_direction(t_game *gamevar)
 	return (0);
 }
 
-int	map_chars_are_valid(char *str, t_game *gamevar)
+int	ft_strlen_v2(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i] != '\n' && str[i] != '\0')
+	{
+		i++;
+	}
+	return (i);
+}
+
+int	map_is_valid(char *str, t_game *gamevar)
 {
 	int	i;
 
 	i = 0;
 	while (str[i] != '\0' && str[i] != '\n')
 	{
+		if (str[0] != '1' || str[ft_strlen_v2(str)] != '1')
+		{
+			write (2, "error\n", 6);
+			return (0);
+		}
 		if ((str[i] == 'N' || str[i] == 'S' || str[i] == 'E' || str[i] == 'W') && gamevar->has_player_dir == 0)
 		{
 			gamevar->player_dir = str[i];
@@ -98,6 +115,7 @@ void    parse_line(int fd, t_game *gamevar)
 {
     char    *line;
     char    **parts;
+	int line_counter;
 	
     gamevar->state = INITIAL;
 	line = get_next_line(fd);
@@ -152,13 +170,18 @@ void    parse_line(int fd, t_game *gamevar)
 		if (gamevar->state == PARSE_MAP_STATE)
 		{
 			gamevar->map_height++;
-			if (!map_chars_are_valid(line, gamevar))
+			if (!map_is_valid(line, gamevar))
 			{
-
+				write(2, "error\n", 6);
+				close (fd);
+				free(line);
+				return(1);			
 			}
 		}
+		free(line);
 		line = get_next_line(fd);
     }
+	close(fd)
 }
 
 void    var_init(t_game* gamevar)
@@ -177,6 +200,7 @@ void    var_init(t_game* gamevar)
         i++;
     }
     gamevar->map = NULL;
+	gamevar->map_first_row_position = -1;
     gamevar->map_width = 0;
     gamevar->map_height = 0;
     gamevar->player_x = -1;
@@ -189,6 +213,35 @@ void    var_init(t_game* gamevar)
     gamevar->has_ea = 0;
     gamevar->has_floor = 0;
     gamevar->has_ceiling = 0;
+}
+
+void fill_map(t_game *gamevar)
+{
+	int	i;
+	char *line;
+
+	i = 0;
+	gamevar->map = malloc(sizeof(char *) * (map_height + 1));
+	if (gamevar->map == NULL)
+		return (NULL);
+	while (i < map_height)
+	{
+		gamevar->map[i] = malloc(sizeof(char) * (map_width + 1))
+		if (map[i] == NULL)
+		{
+			//free already allocated lines
+			return ;
+		}
+		i++;
+	}
+	gamevar->map[map_height] = NULL;
+	fd = open(gamevar->mapfile_path, O_RDONLY);
+	line = get_next_line(fd);
+	i = 0;
+	while (gamevar->map[i] != NULL)
+	{
+
+	}
 }
 
 int parser(int argc, char **argv)
@@ -217,6 +270,9 @@ int parser(int argc, char **argv)
     }
 
     parse_line(fd, gamevar);
+	
+	fill_map(gamevar);
+
 	printf("%s", gamevar->ea_path);
 	close(fd);
 
