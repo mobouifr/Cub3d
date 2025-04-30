@@ -13,6 +13,7 @@ typedef enum    e_state
 
 typedef struct  s_game
 {
+    char *mapfile_path;
     char *no_path;
     char *so_path;
     char *we_path;

@@ -12,6 +12,33 @@ int	line_is_empty(char *str)
 	return (0);
 }
 
+int	valid_extention_check(t_game *game)
+{
+	int		i;
+	int		j;
+	char	*str;
+
+	i = ft_strlen(game->mapfile_path);
+	j = 4;
+	str = ".cub";
+	if (game->mapfile_path[i - 5] == '/' || i <= j)
+	{
+		write(2, "Error\nWrong file extension\n", 27);
+		return (0);
+	}
+	while (j >= 0)
+	{
+		if (game->mapfile_path[i] != str[j])
+		{
+			write(2, "Error\nWrong file extension\n", 27);
+			return (0);
+		}
+		i--;
+		j--;
+	}
+	return (1);
+}
+
 void	parse_rgb_color(int	*color_code, char *str)
 {
 	char **rgb;
@@ -61,7 +88,7 @@ void    parse_line(int fd, t_game *gamevar)
 			gamevar->state = PARSE_DIRECTION_STATE;
 			if (ft_strcmp(parts[0], "NO") == 0)
 			{
-				gamevar->no_path = ft_strdup(parts[1]);
+				gamevar->no_path = parts[1];
 				gamevar->has_no++;
 			}
 			else if (ft_strcmp(parts[0], "SO") == 0)
@@ -92,7 +119,7 @@ void    parse_line(int fd, t_game *gamevar)
 		}
 		if (gamevar->state == PARSE_MAP_STATE)
 		{
-			//map_parsing loop willl be
+
 		}
 		line = get_next_line(fd);
     }
@@ -101,7 +128,8 @@ void    parse_line(int fd, t_game *gamevar)
 void    var_init(t_game* gamevar)
 {
     int i = 0;
-    
+
+    gamevar->mapfile_path = NULL;
     gamevar->no_path = NULL;
     gamevar->so_path = NULL;
     gamevar->we_path = NULL;
@@ -141,8 +169,9 @@ int parser(int argc, char **argv)
 	if (!gamevar)
    		return (write(2, "Error\n", 6), 1);
     var_init(gamevar);
-    fd = open(argv[1], O_RDONLY);
-    if (fd == -1 /*|| !valid_extention_check()*/)
+	gamevar->mapfile_path = argv[1];
+    fd = open(gamevar->mapfile_path, O_RDONLY);
+    if (fd == -1 || !valid_extention_check(gamevar))
     {
         write(2, "Error\n", 6);
         return (1);
