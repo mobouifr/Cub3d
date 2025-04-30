@@ -62,6 +62,38 @@ int	has_direction(t_game *gamevar)
 	return (0);
 }
 
+int	map_chars_are_valid(char *str, t_game *gamevar)
+{
+	int	i;
+
+	i = 0;
+	while (str[i] != '\0' && str[i] != '\n')
+	{
+		if ((str[i] == 'N' || str[i] == 'S' || str[i] == 'E' || str[i] == 'W') && gamevar->has_player_dir == 0)
+		{
+			gamevar->player_dir = str[i];
+			gamevar->player_x = i;
+			gamevar->player_y = gamevar->map_height;
+			gamevar->has_player_dir = 1;
+			i++;
+			if (i > gamevar->map_width)
+				gamevar->map_width++;
+		}
+		else if (str[i] == ' ' || str[i] == '1' || str[i] == '0')
+		{
+			i++;
+			if (i > gamevar->map_width)
+				gamevar->map_width++;
+		}
+		else
+		{
+			write (2, "error\n", 6);
+			return (0);
+		}
+	}
+	return (1);
+}
+
 void    parse_line(int fd, t_game *gamevar)
 {
     char    *line;
@@ -88,7 +120,7 @@ void    parse_line(int fd, t_game *gamevar)
 			gamevar->state = PARSE_DIRECTION_STATE;
 			if (ft_strcmp(parts[0], "NO") == 0)
 			{
-				gamevar->no_path = parts[1];
+				gamevar->no_path = ft_strdup(parts[1]);
 				gamevar->has_no++;
 			}
 			else if (ft_strcmp(parts[0], "SO") == 0)
@@ -119,7 +151,11 @@ void    parse_line(int fd, t_game *gamevar)
 		}
 		if (gamevar->state == PARSE_MAP_STATE)
 		{
+			gamevar->map_height++;
+			if (!map_chars_are_valid(line, gamevar))
+			{
 
+			}
 		}
 		line = get_next_line(fd);
     }
@@ -146,6 +182,7 @@ void    var_init(t_game* gamevar)
     gamevar->player_x = -1;
     gamevar->player_y = -1;
     gamevar->player_dir = '\0';
+	gamevar->has_player_dir = 0;
     gamevar->has_no = 0;
     gamevar->has_so = 0;
     gamevar->has_we = 0;
@@ -164,11 +201,13 @@ int parser(int argc, char **argv)
 		write(2, "Error\n", 6);
         return (1);
     }
-	//  texture_files_check()
+
 	gamevar = malloc(sizeof(t_game));
 	if (!gamevar)
    		return (write(2, "Error\n", 6), 1);
+
     var_init(gamevar);
+
 	gamevar->mapfile_path = argv[1];
     fd = open(gamevar->mapfile_path, O_RDONLY);
     if (fd == -1 || !valid_extention_check(gamevar))
@@ -176,6 +215,7 @@ int parser(int argc, char **argv)
         write(2, "Error\n", 6);
         return (1);
     }
+
     parse_line(fd, gamevar);
 	printf("%s", gamevar->ea_path);
 	close(fd);

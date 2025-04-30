@@ -26,6 +26,7 @@ typedef struct  s_game
     int player_x;
     int player_y;
     char player_dir;
+    int has_player_dir;
     int has_no;
     int has_so;
     int has_we;
