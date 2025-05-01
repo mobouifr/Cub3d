@@ -1,5 +1,16 @@
 #include "parser.h"
 
+void ft_free(char **arr)
+{
+    int i = 0;
+    while (arr && arr[i])
+	{
+        free(arr[i]);
+		i++;
+	}
+	free(arr);
+}
+
 int	line_is_empty(char *str)
 {
 	int	i;
@@ -44,10 +55,26 @@ void	parse_rgb_color(int	*color_code, char *str)
 	char **rgb;
 	int i;
 
+
+	i = 0;
 	rgb = ft_split(str, ',');
-	color_code[0] = ft_atoi(rgb[0]);
-	color_code[1] = ft_atoi(rgb[1]);
-	color_code[2] = ft_atoi(rgb[2]);
+	if (!rgb || !rgb[0] || !rgb[1] || !rgb[2] || rgb[3])
+    {
+        write(2, "error\n", 6);
+        // free the 2d array;
+        exit(1);
+    }
+	while (i < 3)
+    {
+        color_code[i] = ft_atoi(rgb[i]);
+        if (color_code[i] < 0 || color_code[i] > 255)
+        {
+            write(2, "error\n", 6);
+            // free the 2d array;
+            exit(1);
+        }
+        i++;
+    }
 }
 
 int	has_direction(t_game *gamevar)
@@ -77,11 +104,13 @@ int	ft_strlen_v2(char *str)
 int	map_is_valid(char *str, t_game *gamevar)
 {
 	int	i;
+	int len;
 
 	i = 0;
+	len = ft_strlen_v2(str);
 	while (str[i] != '\0' && str[i] != '\n')
 	{
-		if (str[0] != '1' || str[ft_strlen_v2(str)] != '1')
+		if (str[0] != '1' || str[len - 1] != '1')
 		{
 			write (2, "error\n", 6);
 			return (0);
@@ -115,9 +144,7 @@ void    parse_line(int fd, t_game *gamevar)
 {
     char    *line;
     char    **parts;
-	int line_counter;
 	
-    gamevar->state = INITIAL;
 	line = get_next_line(fd);
     while (line != NULL)
     {
@@ -133,7 +160,7 @@ void    parse_line(int fd, t_game *gamevar)
 			if (!parts || !parts[0] || !parts[1] || parts[2])
 			{
 				write(2, "error\n", 6);
-				return(1);
+				exit (1);
 			}
 			gamevar->state = PARSE_DIRECTION_STATE;
 			if (ft_strcmp(parts[0], "NO") == 0)
@@ -175,7 +202,8 @@ void    parse_line(int fd, t_game *gamevar)
 				write(2, "error\n", 6);
 				close (fd);
 				free(line);
-				return(1);			
+				exit (1);
+
 			}
 		}
 		free(line);
@@ -200,7 +228,6 @@ void    var_init(t_game* gamevar)
         i++;
     }
     gamevar->map = NULL;
-	gamevar->map_first_row_position = -1;
     gamevar->map_width = 0;
     gamevar->map_height = 0;
     gamevar->player_x = -1;
@@ -213,6 +240,7 @@ void    var_init(t_game* gamevar)
     gamevar->has_ea = 0;
     gamevar->has_floor = 0;
     gamevar->has_ceiling = 0;
+    gamevar->state = INITIAL;
 }
 
 void fill_map(t_game *gamevar)
@@ -221,26 +249,86 @@ void fill_map(t_game *gamevar)
 	char *line;
 
 	i = 0;
-	gamevar->map = malloc(sizeof(char *) * (map_height + 1));
+	gamevar->map = malloc(sizeof(char *) * (gamevar->map_height + 1));
 	if (gamevar->map == NULL)
 		return (NULL);
-	while (i < map_height)
+	while (i < gamevar->map_height)
 	{
-		gamevar->map[i] = malloc(sizeof(char) * (map_width + 1))
-		if (map[i] == NULL)
+		gamevar->map[i] = malloc(sizeof(char) * (gamevar->map_width + 1));
+		if (gamevar->map[i] == NULL)
 		{
 			//free already allocated lines
 			return ;
 		}
 		i++;
 	}
-	gamevar->map[map_height] = NULL;
-	fd = open(gamevar->mapfile_path, O_RDONLY);
+	gamevar->map[gamevar->map_height] = NULL;
+	int	fd = open(gamevar->mapfile_path, O_RDONLY);
+	int count = 0;
 	line = get_next_line(fd);
-	i = 0;
-	while (gamevar->map[i] != NULL)
+	while (line != NULL)
 	{
-
+		if (ft_strnstr(line, "NO", ft_strlen_v2(line)) || ft_strnstr(line, "SO", ft_strlen_v2(line)) || ft_strnstr(line, "WE", ft_strlen_v2(line)) || ft_strnstr(line, "EA", ft_strlen_v2(line)) ||
+			ft_strnstr(line, "F", ft_strlen_v2(line))  || ft_strnstr(line, "C", ft_strlen_v2(line)))
+		{
+			count++;
+			free (line);
+			continue ;
+		}
+		if (count >= 6)
+		{
+			break ;
+		}
+		free (line);
+		line = get_next_line(fd);
+	}
+	i = 0;
+	while (line != NULL)
+	{
+		if (line_is_empty(line))
+		{
+			line = get_next_line(fd);
+			continue;
+		}
+		else if (i < gamevar->map_height) 
+		{
+			int j = 0;
+			while (line[j] != '\0' && line[j] != '\n')
+			{
+				gamevar->map[i][j] = line[j];
+				j++;
+			}
+			while (j < gamevar->map_width)
+			{
+				gamevar->map[i][j] = '\0';
+				j++;
+			}
+			gamevar->map[i][j] = '\0';
+			i++;
+		}
+		line = get_next_line(fd);
+	}
+	i = 0;
+	while (gamevar->map[0][i] != '\0')
+	{
+		if (gamevar->map[0][i] != '1')
+		{
+			write (2, "error\n", 6);
+			//free all the 2d array;
+			exit (1);
+		}
+		i++;
+	}
+	i = 0;
+	while (gamevar->map[gamevar->map_height - 1][i])
+	{
+		if (gamevar->map[gamevar->map_height - 1][i] != '1)'
+		{
+			write (2, "error\n", 6);
+			//free all the 2d array;
+			exit (1);
+		}
+		i++;
 	}
 }
 
@@ -252,7 +340,7 @@ int parser(int argc, char **argv)
     if (argc != 2)
     {
 		write(2, "Error\n", 6);
-        return (1);
+		exit (1);
     }
 
 	gamevar = malloc(sizeof(t_game));
