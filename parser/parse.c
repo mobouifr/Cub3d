@@ -209,7 +209,7 @@ void    parse_line(int fd, t_game *gamevar)
 		free(line);
 		line = get_next_line(fd);
     }
-	close(fd)
+	close(fd);
 }
 
 void    var_init(t_game* gamevar)
@@ -322,7 +322,7 @@ void fill_map(t_game *gamevar)
 	i = 0;
 	while (gamevar->map[gamevar->map_height - 1][i])
 	{
-		if (gamevar->map[gamevar->map_height - 1][i] != '1)'
+		if (gamevar->map[gamevar->map_height - 1][i] != '1')
 		{
 			write (2, "error\n", 6);
 			//free all the 2d array;
