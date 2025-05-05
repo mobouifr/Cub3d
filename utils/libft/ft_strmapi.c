@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strmapi.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mobouifr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 14:35:28 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/12/08 22:18:11 by mamir            ###   ########.fr       */
+/*   Updated: 2023/11/22 10:50:47 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
 		return (NULL);
 	}
 	len = ft_strlen(s);
-	result = (char *)(len + 1);
+	result = (char *)malloc(len + 1);
 	if (!result)
 	{
 		return (NULL);
@@ -37,3 +37,20 @@ char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
 	result[i] = '\0';
 	return (result);
 }
+
+// int	main(void)
+// {
+// 	char const	c[] = "abcded";
+
+// 	printf("%s", ft_strmapi(c, ft_toupper));
+// 	return (0);
+// }
+// char	ft_toupper(unsigned int i, char c)
+// {
+// 	(void)i;
+// 	if (c >= 'a' && c <= 'z')
+// 	{
+// 		c = c - 32;
+// 	}
+// 	return (c);
+// }

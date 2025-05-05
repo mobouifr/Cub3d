@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_memmove.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mobouifr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 17:59:04 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/09/05 11:37:56 by mamir            ###   ########.fr       */
+/*   Updated: 2023/12/10 14:39:14 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,3 +38,20 @@ void	*ft_memmove(void *dst, const void *src, size_t len)
 	}
 	return (d);
 }
+/*
+#include <stdio.h>
+#include <string.h>
+
+int	main(void)
+{
+	unsigned char		ptr[] = "qwertyuiop";
+	unsigned char		*dst;
+	unsigned const char	*src;
+
+	dst = ptr + 5;
+	src = ptr;
+	printf("ft_memmove: %s\n", ft_memmove(dst, NULL, 4));
+	//printf("memmove: %s\n", memmove(dst, NULL, 3));
+	return (0);
+}
+*/

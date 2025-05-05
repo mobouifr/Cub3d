@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_itoa.c                                          :+:      :+:    :+:   */
+/*   ft_itoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mobouifr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 09:58:36 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/12/20 17:01:34 by mamir            ###   ########.fr       */
+/*   Updated: 2023/11/27 22:01:15 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,11 @@ char	*ft_itoa(int n)
 {
 	int		len;
 	char	*p;
+	int		i;
 	int		j;
 	long	nb;
 
+	i = 0;
 	j = 0;
 	nb = (long)n;
 	if (nb < 0)
@@ -63,10 +65,17 @@ char	*ft_itoa(int n)
 	{
 		len = ft_nstrlen(nb);
 	}
-	p = _malloc(len + 1, 'm');
+	p = malloc(len + 1);
 	if (!p)
 		return (NULL);
 	p[len] = '\0';
 	ft_maker(p, len, j, nb);
 	return (p);
 }
+/*
+#include <stdio.h>
+
+int	main(void)
+{
+	printf("%s\n", ft_itoa(-2147483648));
+}*/

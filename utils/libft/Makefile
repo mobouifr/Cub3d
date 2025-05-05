@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mamir <mamir@student.42.fr>                +#+  +:+       +#+         #
+#    By: mobouifr <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/26 16:18:47 by mobouifr          #+#    #+#              #
-#    Updated: 2024/12/13 22:53:33 by mamir            ###   ########.fr        #
+#    Updated: 2023/12/16 12:02:02 by mobouifr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,6 @@ NAME = libft.a
 SRC = ft_atoi.c \
 	ft_bzero.c \
 	ft_calloc.c \
-	ft_isspace.c \
 	ft_isalnum.c \
 	ft_isalpha.c \
 	ft_isascii.c \
@@ -45,15 +44,11 @@ SRC = ft_atoi.c \
 	ft_strmapi.c \
 	ft_substr.c \
 	ft_split.c \
-	ft_ssplit.c \
-	ft_strtrim.c \
-	ft_strcmp.c
-	
-	
+	ft_strtrim.c
 OBJ = $(SRC:.c=.o)
 CC = cc
 CFLAGS = -Wall -Werror -Wextra
-INC = -I../../includes/
+
 all: $(NAME)
 
 .c.o:

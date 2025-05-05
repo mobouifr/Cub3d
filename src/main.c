@@ -386,6 +386,7 @@ int main(int argc, char **argv)
         printf("Usage: ./program <map_file>\n");
         return 1;
     }
+    parser(argc, argv);
     t_data data;
     initialize_data(&data);
     data.map->map = read_map_from_file(argv[1], &data.map->rows, &data.map->cols);

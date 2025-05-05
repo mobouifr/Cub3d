@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strrchr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mobouifr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 22:13:14 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/09/05 11:40:58 by mamir            ###   ########.fr       */
+/*   Updated: 2023/12/10 15:23:01 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,3 +31,15 @@ char	*ft_strrchr(const char *s, int c)
 	}
 	return (NULL);
 }
+/*
+#include <stdio.h>
+#include <string.h>
+
+int	main(void)
+{
+	const char	s[] = "Hello, world!";
+
+	printf("ft_strrchr : %s", ft_strrchr(s, 'v'));
+	// printf("strrchr : %s", strrchr(s, 'v'));
+	return (0);
+}*/

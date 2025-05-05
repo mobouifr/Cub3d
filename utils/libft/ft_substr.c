@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_substr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mobouifr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 15:09:54 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/12/13 15:21:34 by mamir            ###   ########.fr       */
+/*   Updated: 2023/12/10 15:39:43 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,9 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 		len = ft_strlen(s) - start;
 	if (start >= ft_strlen(s))
 		return (ft_strdup(""));
-	str = _malloc(len + 1, 'm');
+	str = malloc(len + 1);
+	if (!str)
+		return (NULL);
 	while (s[start] != '\0' && l < len)
 	{
 		str[l] = s[start];
@@ -33,4 +35,15 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	}
 	str[l] = '\0';
 	return (str);
+	return (0);
 }
+/*
+#include <stdio.h>
+
+int	main(void)
+{
+	char const	s[] = "qwertyuiop";
+
+	printf("%s", ft_substr(s, 8, 5));
+	return (0);
+}*/

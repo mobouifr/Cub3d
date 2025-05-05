@@ -1,4 +1,4 @@
-#include "parser.h"
+#include "cub3d.h"
 
 void ft_free(char **arr)
 {
@@ -251,7 +251,7 @@ void fill_map(t_game *gamevar)
 	i = 0;
 	gamevar->map = malloc(sizeof(char *) * (gamevar->map_height + 1));
 	if (gamevar->map == NULL)
-		return (NULL);
+		return ;
 	while (i < gamevar->map_height)
 	{
 		gamevar->map[i] = malloc(sizeof(char) * (gamevar->map_width + 1));
@@ -363,5 +363,5 @@ int parser(int argc, char **argv)
 
 	printf("%s", gamevar->ea_path);
 	close(fd);
-
+	return (0);
 }

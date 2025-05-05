@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mobouifr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 16:00:55 by mobouifr          #+#    #+#             */
-/*   Updated: 2024/12/08 22:18:10 by mamir            ###   ########.fr       */
+/*   Updated: 2023/12/10 11:47:03 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		return (ft_strdup(s2));
 	else if (!s2 && s1)
 		return (ft_strdup(s1));
-	s3 = _malloc(ft_strlen(s1) + ft_strlen(s2) + 1, 'm');
+	s3 = malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
 	if (!s3)
 		return (NULL);
 	while (s1[i] != '\0')
@@ -37,3 +37,13 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	s3[j] = '\0';
 	return (s3);
 }
+/*
+int	main(void)
+{
+	const char	s1[] = "be free ";
+	const char	s2[] = "as a bee";
+
+	printf("%s", ft_strjoin(s1, s2));
+	return (0);
+}
+*/
