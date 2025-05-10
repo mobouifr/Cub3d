@@ -109,8 +109,8 @@ void draw_player_facing_line(t_data *data)
 
 void init_player_data(t_data *data)
 {
-    data->player->player_x = 5; 
-    data->player->player_y = 5;
+    //data->player->player_x = 5; 
+    //data->player->player_y = 5;
     data->player->rot_angle = 0;
     data->player->turn_dir = 0;
     data->player->walk_dir = 0;
@@ -379,17 +379,34 @@ void initialize_data(t_data *data)
 
 }
 
+double dir_to_angle(char c)
+{
+    if (c == 'N') 
+        return (3 * M_PI / 2); // 270° → facing up
+    if (c == 'S') 
+        return (M_PI / 2);     // 90° → facing down
+    if (c == 'E') 
+        return (0);            // 0° → facing right
+    if (c == 'W') 
+        return (M_PI);         // 180° → facing left
+    return 0;
+}
+
 int main(int argc, char **argv)
 {
-    if (argc < 2)
-    {
-        printf("Usage: ./program <map_file>\n");
-        return 1;
-    }
-    parser(argc, argv);
     t_data data;
+    t_game *parsed;
+   
+    parsed = parser(argc, argv);
     initialize_data(&data);
-    data.map->map = read_map_from_file(argv[1], &data.map->rows, &data.map->cols);
+    //data.map->map = read_map_from_file(argv[1], &data.map->rows, &data.map->cols);
+    data.map->map = parsed->map;
+    data.map->rows = parsed->map_height;
+    data.map->cols = parsed->map_width;
+    
+    data.player->player_x = parsed->player_x;
+    data.player->player_y = parsed->player_y;
+   data.player->rot_angle = dir_to_angle(parsed->player_dir);
     mlx_start(&data);
     start_game(&data);
 

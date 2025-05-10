@@ -97,6 +97,6 @@ void			mlx_start(t_data *data);
 int				close_window(t_data *data);
 void			my_mlx_pixel_put(t_data *data, int x, int y, int color);
 char			*get_next_line(int fd);
-int				parser(int argc, char **argv);
+t_game			*parser(int argc, char **argv);
 
 #endif
