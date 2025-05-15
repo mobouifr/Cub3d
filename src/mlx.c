@@ -2,7 +2,7 @@
 
 void mlx_start(t_data *data)
 {
-    data->mlx->win_width = 800; // Set the window width
+    data->mlx->win_width = 1100; // Set the window width
     data->mlx->win_height = 600; // Set the window height
     data->mlx->mlx = mlx_init();
     data->mlx->win = mlx_new_window(data->mlx->mlx, data->mlx->win_width, data->mlx->win_height, "cub3D");

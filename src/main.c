@@ -1,4 +1,5 @@
 #include "cub3d.h"
+#include <math.h>
 
 void draw_line(t_data *data, int x1, int y1, int x2, int y2, int color)
 {
@@ -111,7 +112,7 @@ void init_player_data(t_data *data)
 {
     //data->player->player_x = 5; 
     //data->player->player_y = 5;
-    data->player->rot_angle = 0;
+    //data->player->rot_angle = 0;
     data->player->turn_dir = 0;
     data->player->walk_dir = 0;
     data->player->move_speed = 0.02;
@@ -314,7 +315,9 @@ void draw(t_data *data)
         }
         y++;
     }
-
+    draw_map(data, data->map->map, data->map->rows, data->map->cols);
+    draw_player(data);
+    draw_player_facing_line(data);
     cast_rays(data); // Render the 3D walls
     mlx_put_image_to_window(data->mlx->mlx, data->mlx->win, data->mlx->img, 0, 0);
 }
@@ -351,8 +354,6 @@ int game_loop(t_data *data)
     draw(data);
     return (0);
 }
-
-
 
 void start_game(t_data *data)
 {
@@ -399,14 +400,15 @@ int main(int argc, char **argv)
    
     parsed = parser(argc, argv);
     initialize_data(&data);
-    //data.map->map = read_map_from_file(argv[1], &data.map->rows, &data.map->cols);
+    
     data.map->map = parsed->map;
     data.map->rows = parsed->map_height;
     data.map->cols = parsed->map_width;
     
     data.player->player_x = parsed->player_x;
     data.player->player_y = parsed->player_y;
-   data.player->rot_angle = dir_to_angle(parsed->player_dir);
+    data.player->rot_angle = dir_to_angle(parsed->player_dir);
+    
     mlx_start(&data);
     start_game(&data);
 
