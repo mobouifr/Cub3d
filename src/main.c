@@ -110,9 +110,6 @@ void draw_player_facing_line(t_data *data)
 
 void init_player_data(t_data *data)
 {
-    //data->player->player_x = 5; 
-    //data->player->player_y = 5;
-    //data->player->rot_angle = 0;
     data->player->turn_dir = 0;
     data->player->walk_dir = 0;
     data->player->move_speed = 0.02;
@@ -207,7 +204,6 @@ double cast_ray(t_data *data, double ray_angle, int *side_hit)
             map_y += step_y;
             *side_hit = 1;
         }
-
         
         if (map_x < 0 || map_x >= data->map->cols || map_y < 0 || map_y >= data->map->rows)
             break;
@@ -302,7 +298,7 @@ void draw(t_data *data)
         y++;
     }
 
-    // Draw the floor
+    //Draw the floor
     int floor_color = 0x8B4513; // Brown color for the floor
     y = data->mlx->win_height / 2;
     while (y < data->mlx->win_height) // Bottom half of the screen
@@ -315,10 +311,10 @@ void draw(t_data *data)
         }
         y++;
     }
+    // draw_player_facing_line(data);
+    cast_rays(data); // Render the 3D walls
     draw_map(data, data->map->map, data->map->rows, data->map->cols);
     draw_player(data);
-    draw_player_facing_line(data);
-    cast_rays(data); // Render the 3D walls
     mlx_put_image_to_window(data->mlx->mlx, data->mlx->win, data->mlx->img, 0, 0);
 }
 

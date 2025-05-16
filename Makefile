@@ -17,7 +17,7 @@ SRC = src/main.c\
 		utils/libft/ft_strcmp.c \
 
 CC = cc $(INC)
-CFLAGS = #-Werror -Wextra -Wall -g3 -fsanitize=address
+CFLAGS = -Werror -Wextra -Wall -g3 -fsanitize=address
 OBJ = $(SRC:.c=.o)
 INC = -I./includes/
 
