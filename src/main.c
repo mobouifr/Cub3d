@@ -1,6 +1,50 @@
 #include "cub3d.h"
 #include <math.h>
 
+int get_texture_index(double ray_dir_x, double ray_dir_y, int side_hit)
+{
+    if (side_hit == 0)
+    {
+        if (ray_dir_x > 0)
+            return 2; // East
+        else
+            return 3; // West
+    }
+    else
+    {
+        if (ray_dir_y > 0)
+            return 1; // South
+        else
+            return 0; // North
+    }
+}
+
+unsigned int get_tex_color(t_texture *tex, int x, int y)
+{
+    char *dst = tex->addr + (y * tex->line_len + x * (tex->bpp / 8));
+    return *(unsigned int *)dst;
+}
+
+t_texture *load_texture(t_data *data, char *path)
+{
+    t_texture *tex = malloc(sizeof(t_texture));
+    if (!tex)
+    {
+        printf("Memory allocation failed for texture\n");
+        exit(1);
+    }
+    tex->img = mlx_xpm_file_to_image(data->mlx->mlx, path, &tex->width, &tex->height);
+    printf ("{%s} - %d - %d", path, tex->width, tex->height);
+    if (!tex->img)
+    {
+        printf("Failed to load texture %s\n", path);
+        free(tex);
+        exit(1);
+    }
+    tex->addr = mlx_get_data_addr(tex->img, &tex->bpp, &tex->line_len, &tex->endian);
+    return tex;
+}
+
 void draw_line(t_data *data, int x1, int y1, int x2, int y2, int color)
 {
     int dx = abs(x2 - x1);
@@ -248,13 +292,29 @@ void cast_rays(t_data *data)
         if (draw_end >= data->mlx->win_height)
             draw_end = data->mlx->win_height - 1;
 
-        // Use green for the walls
-        int color = 0x00FF00; // Green color
+        // Compute wall_x: the exact point of the wall hit (fractional part)
+        double wall_x;
+        if (side_hit == 0)
+            wall_x = data->player->player_y + perp_wall_dist * sin(ray_angle);
+        else
+            wall_x = data->player->player_x + perp_wall_dist * cos(ray_angle);
+        wall_x -= floor(wall_x);
 
-        // Draw the vertical line
+        // Choose texture
+        int tex_index = get_texture_index(cos(ray_angle), sin(ray_angle), side_hit);
+        t_texture *tex = data->textures[tex_index];
+
+        // Compute X coordinate in texture
+        int tex_x = (int)(wall_x * tex->width);
+        if ((side_hit == 0 && cos(ray_angle) > 0) || (side_hit == 1 && sin(ray_angle) < 0))
+            tex_x = tex->width - tex_x - 1;
+
+        // Draw vertical textured wall slice
         int y = draw_start;
         while (y < draw_end)
         {
+            int tex_y = (int)(((double)(y - draw_start) / (draw_end - draw_start)) * tex->height);
+            unsigned int color = get_tex_color(tex, tex_x, tex_y);
             my_mlx_pixel_put(data, i, y, color);
             y++;
         }
@@ -285,7 +345,7 @@ void draw(t_data *data)
     clear_image(data); // Clear the screen
 
     // Draw the sky
-    int sky_color = 0x87CEEB; // Light blue color for the sky
+    int sky_color = 0x2E3A3F;  // Muted smoky blue-gray
     int y = 0;
     while (y < data->mlx->win_height / 2) // Top half of the screen
     {
@@ -299,7 +359,7 @@ void draw(t_data *data)
     }
 
     //Draw the floor
-    int floor_color = 0x8B4513; // Brown color for the floor
+    int floor_color = 0x1A1A18;  // Industrial dark gray/black
     y = data->mlx->win_height / 2;
     while (y < data->mlx->win_height) // Bottom half of the screen
     {
@@ -366,7 +426,7 @@ void initialize_data(t_data *data)
     data->mlx = malloc(sizeof(t_mlx));
     data->player = malloc(sizeof(t_player));
     data->map = malloc(sizeof(t_map));
-    
+        
     if (!data->mlx || !data->player || !data->map)
     {
         printf("Memory allocation failed\n");
@@ -396,6 +456,7 @@ int main(int argc, char **argv)
    
     parsed = parser(argc, argv);
     initialize_data(&data);
+    print_gamevar(parsed);
     
     data.map->map = parsed->map;
     data.map->rows = parsed->map_height;
@@ -405,7 +466,14 @@ int main(int argc, char **argv)
     data.player->player_y = parsed->player_y;
     data.player->rot_angle = dir_to_angle(parsed->player_dir);
     
+    
     mlx_start(&data);
+    
+    data.textures[0] = load_texture(&data, parsed->no_path);
+    data.textures[1] = load_texture(&data, parsed->so_path);
+    data.textures[2] = load_texture(&data, parsed->ea_path);
+    data.textures[3] = load_texture(&data, parsed->we_path);
+    
     start_game(&data);
 
     int i = 0;

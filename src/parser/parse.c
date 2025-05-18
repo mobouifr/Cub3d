@@ -172,6 +172,21 @@ int	map_is_valid(char *str, t_game *gamevar)
 	return (1);
 }
 
+char *set_terminator(char *str)
+{
+	int i;
+
+	i = 0;
+	while (str[i] != '\n')
+	{
+		i++;
+	}
+	str[i] = '\0';
+	
+	return (str);
+}
+
+
 void	parse_line(int fd, t_game *gamevar)
 {
 	char	*line;
@@ -202,22 +217,22 @@ void	parse_line(int fd, t_game *gamevar)
 			gamevar->state = PARSE_DIRECTION_STATE;
 			if (ft_strcmp(parts[0], "NO") == 0)
 			{
-				gamevar->no_path = ft_strdup(parts[1]);
+				gamevar->no_path = ft_strdup(set_terminator(parts[1]));
 				gamevar->has_no++;
 			}
 			else if (ft_strcmp(parts[0], "SO") == 0)
 			{
-				gamevar->so_path = ft_strdup(parts[1]);
+				gamevar->so_path = ft_strdup(set_terminator(parts[1]));
 				gamevar->has_so++;
 			}
 			else if (ft_strcmp(parts[0], "WE") == 0)
 			{
-				gamevar->we_path = ft_strdup(parts[1]);
+				gamevar->we_path = ft_strdup(set_terminator(parts[1]));
 				gamevar->has_we++;
 			}
 			else if (ft_strcmp(parts[0], "EA") == 0)
 			{
-				gamevar->ea_path = ft_strdup(parts[1]);
+				gamevar->ea_path = ft_strdup(set_terminator(parts[1]));
 				gamevar->has_ea++;
 			}
 			else if (ft_strcmp(parts[0], "F") == 0)
@@ -402,7 +417,6 @@ t_game	*parser(int argc, char **argv)
 
 	fill_map(gamevar);
 	close(fd);
-	print_gamevar(gamevar);
 	int j = 0;
 	while (gamevar->map[j] != NULL)
 	{

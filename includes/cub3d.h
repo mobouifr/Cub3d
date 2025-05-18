@@ -14,10 +14,10 @@
 # include <string.h>
 # include <unistd.h>
 
-#ifndef M_PI
-# define M_PI		3.14159265358979323846	/* pi */
-# define M_PI_2		1.57079632679489661923	/* pi/2 */
-#endif
+# ifndef M_PI
+#  define M_PI 3.14159265358979323846   /* pi */
+#  define M_PI_2 1.57079632679489661923 /* pi/2 */
+# endif
 
 // parsing.h -start-
 
@@ -52,6 +52,17 @@ typedef struct s_game
 	int			has_ceiling;
 	t_state		state;
 }				t_game;
+
+typedef struct s_texture
+{
+	void		*img;
+	char		*addr;
+	int			bpp;
+	int			line_len;
+	int			endian;
+	int			width;
+	int			height;
+}				t_texture;
 
 // -end-
 
@@ -93,7 +104,7 @@ typedef struct s_data
 	t_player	*player;
 	t_map		*map;
 	t_mlx		*mlx;
-
+	t_texture	*textures[4];
 }				t_data;
 
 void			draw_map(t_data *data, char **map, int rows, int cols);
@@ -103,5 +114,6 @@ int				close_window(t_data *data);
 void			my_mlx_pixel_put(t_data *data, int x, int y, int color);
 char			*get_next_line(int fd);
 t_game			*parser(int argc, char **argv);
+void			print_gamevar(const t_game *g);
 
 #endif

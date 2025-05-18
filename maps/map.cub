@@ -1,7 +1,7 @@
-NO /gggg
-SO /ffff
-EA /gggg
-WE /dddd
+NO textures/TECH_3B.xpm
+SO textures/TECH_3B.xpm
+EA textures/TECH_3B.xpm
+WE textures/TECH_3B.xpm
 F 002,111,222
 C 111,222,222
 
