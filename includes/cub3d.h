@@ -37,6 +37,8 @@ typedef struct s_game
 	char		*ea_path;
 	int			floor_color[3];
 	int			ceiling_color[3];
+	int			floor_color_hex;
+	int			ceiling_color_hex;
 	char		**map;
 	int			map_width;
 	int			map_height;
@@ -66,6 +68,12 @@ typedef struct s_texture
 
 // -end-
 
+
+typedef struct s_colors
+{
+	int			floor_color_hex;
+	int			ceiling_color_hex;
+}				t_colors;
 typedef struct s_player
 {
 	double		player_x;
@@ -105,10 +113,10 @@ typedef struct s_data
 	t_map		*map;
 	t_mlx		*mlx;
 	t_texture	*textures[4];
+	t_colors	*colors;
 }				t_data;
 
 void			draw_map(t_data *data, char **map, int rows, int cols);
-char			**read_map_from_file(char *filename, int *rows, int *cols);
 void			mlx_start(t_data *data);
 int				close_window(t_data *data);
 void			my_mlx_pixel_put(t_data *data, int x, int y, int color);

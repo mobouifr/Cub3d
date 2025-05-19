@@ -3,29 +3,36 @@
 void print_gamevar(const t_game *g)
 {
     printf("=== t_game contents ===\n");
-    printf("mapfile_path   : %s\n",   g->mapfile_path);
-    printf("no_path        : %s\n",   g->no_path);
-    printf("so_path        : %s\n",   g->so_path);
-    printf("we_path        : %s\n",   g->we_path);
-    printf("ea_path        : %s\n",   g->ea_path);
-    printf("floor_color    : %d,%d,%d\n",
+    printf("mapfile_path          : [%s]\n",   g->mapfile_path);
+    printf("no_path               : [%s]\n",   g->no_path);
+    printf("so_path               : [%s]\n",   g->so_path);
+    printf("we_path               : [%s]\n",   g->we_path);
+    printf("ea_path               : [%s]\n",   g->ea_path);
+    printf("floor_color           : [%d,%d,%d]\n",
            g->floor_color[0], g->floor_color[1], g->floor_color[2]);
-    printf("ceiling_color  : %d,%d,%d\n",
+    printf("ceiling_color         : [%d,%d,%d]\n",
            g->ceiling_color[0], g->ceiling_color[1], g->ceiling_color[2]);
-    printf("map            : %p\n",   (void*)g->map);
-    printf("map_width      : %d\n",   g->map_width);
-    printf("map_height     : %d\n",   g->map_height);
-    printf("player_x       : %d\n",   g->player_x);
-    printf("player_y       : %d\n",   g->player_y);
-    printf("player_dir     : %c\n",   g->player_dir ? g->player_dir : '0');
-    printf("has_player_dir : %d\n",   g->has_player_dir);
-    printf("has_no         : %d\n",   g->has_no);
-    printf("has_so         : %d\n",   g->has_so);
-    printf("has_we         : %d\n",   g->has_we);
-    printf("has_ea         : %d\n",   g->has_ea);
-    printf("has_floor      : %d\n",   g->has_floor);
-    printf("has_ceiling    : %d\n",   g->has_ceiling);
+	printf("floor_color_hex       : [%d]\n",   g->floor_color_hex);
+	printf("ceiling_color_hex     : [%d]\n",   g->ceiling_color_hex);
+	printf("map                   : [%p]\n",   (void*)g->map);
+    printf("map_width             : [%d]\n",   g->map_width);
+    printf("map_height            : [%d]\n",   g->map_height);
+    printf("player_x              : [%d]\n",   g->player_x);
+    printf("player_y              : [%d]\n",   g->player_y);
+    printf("player_dir            : [%c]\n",   g->player_dir ? g->player_dir        : '0');
+    printf("has_player_dir        : [%d]\n",   g->has_player_dir);
+    printf("has_no                : [%d]\n",   g->has_no);
+    printf("has_so                : [%d]\n",   g->has_so);
+    printf("has_we                : [%d]\n",   g->has_we);
+    printf("has_ea                : [%d]\n",   g->has_ea);
+    printf("has_floor             : [%d]\n",   g->has_floor);
+    printf("has_ceiling           : [%d]\n",   g->has_ceiling);
     printf("========================\n");
+}
+
+int rgb_to_hex(int r, int g, int b)
+{
+	return (r * 256 * 256) + (g * 256) + b;
 }
 
 void	ft_free(char **arr)
@@ -79,7 +86,7 @@ void	valid_extention_check(t_game *game)
 	}
 }
 
-void	parse_rgb_color(int *color_code, char *str)
+int	parse_rgb_color(int *color_code, char *str)
 {
 	char	**rgb;
 	int		i;
@@ -97,11 +104,11 @@ void	parse_rgb_color(int *color_code, char *str)
 		if (color_code[i] < 0 || color_code[i] > 255)
 		{
 			write(2, "rgb range error\n", 16);
-
 			exit(1);
 		}
 		i++;
 	}
+	return ((color_code[0] * 256 * 256) + (color_code[1] * 256) + color_code[2]);
 }
 
 int	has_direction(t_game *gamevar)
@@ -237,12 +244,12 @@ void	parse_line(int fd, t_game *gamevar)
 			}
 			else if (ft_strcmp(parts[0], "F") == 0)
 			{
-				parse_rgb_color(gamevar->floor_color, parts[1]);
+				gamevar->floor_color_hex = parse_rgb_color(gamevar->floor_color, parts[1]);
 				gamevar->has_floor++;
 			}
 			else if (ft_strcmp(parts[0], "C") == 0)
 			{
-				parse_rgb_color(gamevar->ceiling_color, parts[1]);
+				gamevar->ceiling_color_hex = parse_rgb_color(gamevar->ceiling_color, parts[1]);
 				gamevar->has_ceiling++;
 			}
 		}
@@ -277,6 +284,8 @@ void	var_init(t_game *gamevar)
 		gamevar->ceiling_color[i] = -1;
 		i++;
 	}
+	gamevar->floor_color_hex = 0;
+	gamevar->ceiling_color_hex = 0;
 	gamevar->map = NULL;
 	gamevar->map_width = 0;
 	gamevar->map_height = 0;

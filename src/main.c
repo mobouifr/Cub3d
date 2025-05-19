@@ -345,7 +345,7 @@ void draw(t_data *data)
     clear_image(data); // Clear the screen
 
     // Draw the sky
-    int sky_color = 0x2E3A3F;  // Muted smoky blue-gray
+    int sky_color = data->colors->ceiling_color_hex/*0x2E3A3F*/;  // Muted smoky blue-gray
     int y = 0;
     while (y < data->mlx->win_height / 2) // Top half of the screen
     {
@@ -359,7 +359,7 @@ void draw(t_data *data)
     }
 
     //Draw the floor
-    int floor_color = 0x1A1A18;  // Industrial dark gray/black
+    int floor_color = data->colors->floor_color_hex/*0x1A1A18*/;  // Industrial dark gray/black
     y = data->mlx->win_height / 2;
     while (y < data->mlx->win_height) // Bottom half of the screen
     {
@@ -426,6 +426,7 @@ void initialize_data(t_data *data)
     data->mlx = malloc(sizeof(t_mlx));
     data->player = malloc(sizeof(t_player));
     data->map = malloc(sizeof(t_map));
+    data->colors = malloc(sizeof(t_colors));
         
     if (!data->mlx || !data->player || !data->map)
     {
@@ -465,6 +466,9 @@ int main(int argc, char **argv)
     data.player->player_x = parsed->player_x;
     data.player->player_y = parsed->player_y;
     data.player->rot_angle = dir_to_angle(parsed->player_dir);
+
+    data.colors->ceiling_color_hex = parsed->ceiling_color_hex;
+    data.colors->floor_color_hex = parsed->floor_color_hex;
     
     
     mlx_start(&data);
