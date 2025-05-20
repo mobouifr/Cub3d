@@ -285,7 +285,8 @@ void cast_rays(t_data *data)
         int line_height = (int)(data->mlx->win_height / corrected_dist);
 
         // Calculate the start and end points of the wall slice
-        int draw_start = -line_height / 2 + data->mlx->win_height / 2;
+        int unclipped_draw_start = -line_height / 2 + data->mlx->win_height / 2; // added this for not letting the wall distoreted when close to them.
+        int draw_start = unclipped_draw_start;
         if (draw_start < 0)
             draw_start = 0;
         int draw_end = line_height / 2 + data->mlx->win_height / 2;
@@ -313,7 +314,11 @@ void cast_rays(t_data *data)
         int y = draw_start;
         while (y < draw_end)
         {
-            int tex_y = (int)(((double)(y - draw_start) / (draw_end - draw_start)) * tex->height);
+            int tex_y = (int)(((double)(y - unclipped_draw_start) / line_height) * tex->height);
+            if (tex_y < 0)
+                tex_y = 0;
+            if (tex_y >= tex->height)
+                tex_y = tex->height - 1;
             unsigned int color = get_tex_color(tex, tex_x, tex_y);
             my_mlx_pixel_put(data, i, y, color);
             y++;
