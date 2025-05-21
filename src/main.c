@@ -360,7 +360,6 @@ void draw(t_data *data)
         }
         y++;
     }
-
     //Draw the floor
     int floor_color = data->colors->floor_color_hex/*0x1A1A18*/;  // Industrial dark gray/black
     y = data->mlx->win_height / 2;
@@ -374,10 +373,9 @@ void draw(t_data *data)
         }
         y++;
     }
-    // draw_player_facing_line(data);
     cast_rays(data); // Render the 3D walls
-    draw_map(data, data->map->map, data->map->rows, data->map->cols);
-    draw_player(data);
+    // draw_map(data, data->map->map, data->map->rows, data->map->cols);
+    // draw_player(data);
     mlx_put_image_to_window(data->mlx->mlx, data->mlx->win, data->mlx->img, 0, 0);
 }
 
@@ -473,7 +471,6 @@ int main(int argc, char **argv)
 
     data.colors->ceiling_color_hex = parsed->ceiling_color_hex;
     data.colors->floor_color_hex = parsed->floor_color_hex;
-    
     
     mlx_start(&data);
     
