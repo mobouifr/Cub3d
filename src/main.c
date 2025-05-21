@@ -118,7 +118,7 @@ void move_player(t_data *data)
 
 void strafe_player(t_data *data, int direction)
 {
-    double move_step = direction * data->player->move_speed * 20;
+    double move_step = direction * data->player->move_speed * 5;
     double cos_angle = cos(data->player->rot_angle + M_PI_2);
     double sin_angle = sin(data->player->rot_angle + M_PI_2);
     double new_x = data->player->player_x + cos_angle * move_step;
@@ -164,7 +164,7 @@ int key_released(int keycode, t_data *data)
 {
     if (keycode == 'w' || keycode == 's') // Stop forward/backward movement
         data->player->walk_dir = 0;
-    else if (keycode == 'a' || keycode == 'd' || keycode == 65361 || keycode == 65363) // Stop rotation
+    else if (keycode == 65361 || keycode == 65363) // Stop rotation
         data->player->turn_dir = 0;
 
     return 0;
@@ -378,8 +378,8 @@ void draw(t_data *data)
     }
     // draw_player_facing_line(data);
     cast_rays(data); // Render the 3D walls
-    draw_map(data, data->map->map, data->map->rows, data->map->cols);
-    draw_player(data);
+    // draw_map(data, data->map->map, data->map->rows, data->map->cols);
+    // draw_player(data);
     mlx_put_image_to_window(data->mlx->mlx, data->mlx->win, data->mlx->img, 0, 0);
 }
 
@@ -391,9 +391,9 @@ int handle_keypress(int keycode, t_data *data)
     else if (keycode == 's') // Move backward
         data->player->walk_dir = -1;
     else if (keycode == 'a') // Rotate left (A key)
-        data->player->turn_dir = -1; // Counter-clockwise
+        strafe_player(data, -1);
     else if (keycode == 'd') // Rotate right (D key)
-        data->player->turn_dir = 1; // Clockwise
+        strafe_player(data, 1);// Clockwise
     else if (keycode == 65361) // Rotate left (Left Arrow)
         data->player->turn_dir = -1; // Counter-clockwise
     else if (keycode == 65363) // Rotate right (Right Arrow)
