@@ -118,7 +118,7 @@ void move_player(t_data *data)
 
 void strafe_player(t_data *data, int direction)
 {
-    double move_step = direction * data->player->move_speed * 5;
+    double move_step = direction * data->player->move_speed;
     double cos_angle = cos(data->player->rot_angle + M_PI_2);
     double sin_angle = sin(data->player->rot_angle + M_PI_2);
     double new_x = data->player->player_x + cos_angle * move_step;
@@ -155,6 +155,7 @@ void draw_player_facing_line(t_data *data)
 void init_player_data(t_data *data)
 {
     data->player->turn_dir = 0;
+    data->player->strafe_dir = 0;
     data->player->walk_dir = 0;
     data->player->move_speed = 0.02;
     data->player->rot_speed = 0.5 * (M_PI / 180);
@@ -163,14 +164,13 @@ void init_player_data(t_data *data)
 int key_released(int keycode, t_data *data)
 {
     if (keycode == 'w' || keycode == 's') // Stop forward/backward movement
-        data->player->walk_dir = 0;
+        data->player->walk_dir = 0;      
+    else if (keycode == 'a' || keycode == 'd') // Stop strafing
+        data->player->strafe_dir = 0;
     else if (keycode == 65361 || keycode == 65363) // Stop rotation
         data->player->turn_dir = 0;
-
     return 0;
 }
-
-
 
 void draw_player(t_data *data)
 {
@@ -391,9 +391,9 @@ int handle_keypress(int keycode, t_data *data)
     else if (keycode == 's') // Move backward
         data->player->walk_dir = -1;
     else if (keycode == 'a') // Rotate left (A key)
-        strafe_player(data, -1);
+        data->player->strafe_dir = -1; // Counter-clockwise
     else if (keycode == 'd') // Rotate right (D key)
-        strafe_player(data, 1);// Clockwise
+        data->player->strafe_dir = 1;
     else if (keycode == 65361) // Rotate left (Left Arrow)
         data->player->turn_dir = -1; // Counter-clockwise
     else if (keycode == 65363) // Rotate right (Right Arrow)
@@ -409,9 +409,10 @@ int game_loop(t_data *data)
 {
     if (data->player->walk_dir != 0)
         move_player(data);
+    if (data->player->strafe_dir != 0)
+        strafe_player(data, data->player->strafe_dir);
     if (data->player->turn_dir != 0)
         rotate_player(data, data->player->turn_dir);
-
     draw(data);
     return (0);
 }

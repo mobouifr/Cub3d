@@ -80,6 +80,7 @@ typedef struct s_player
 	double		player_y;
 	int			radius;
 	int			turn_dir;
+	int			strafe_dir;
 	int			walk_dir;
 	double		rot_angle;
 	double		move_speed;
