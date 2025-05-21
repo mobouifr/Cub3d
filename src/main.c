@@ -109,11 +109,10 @@ void move_player(t_data *data)
     double new_x = data->player->player_x + cos_angle * move_step;
     double new_y = data->player->player_y + sin_angle * move_step;
 
-    if (is_walkable(data, new_x, new_y))
-    {
+    if (is_walkable(data, new_x, data->player->player_y))
         data->player->player_x = new_x;
-        data->player->player_y = new_y;
-    }
+    if (is_walkable(data, data->player->player_x, new_y))
+    data->player->player_y = new_y;
 }
 
 void strafe_player(t_data *data, int direction)
@@ -124,11 +123,10 @@ void strafe_player(t_data *data, int direction)
     double new_x = data->player->player_x + cos_angle * move_step;
     double new_y = data->player->player_y + sin_angle * move_step;
 
-    if (is_walkable(data, new_x, new_y))
-    {
+    if (is_walkable(data, new_x, data->player->player_y))
         data->player->player_x = new_x;
-        data->player->player_y = new_y;
-    }
+    if (is_walkable(data, data->player->player_x, new_y))
+    data->player->player_y = new_y;
 }
 
 void rotate_player(t_data *data, int direction)
@@ -378,8 +376,8 @@ void draw(t_data *data)
     }
     // draw_player_facing_line(data);
     cast_rays(data); // Render the 3D walls
-    // draw_map(data, data->map->map, data->map->rows, data->map->cols);
-    // draw_player(data);
+    draw_map(data, data->map->map, data->map->rows, data->map->cols);
+    draw_player(data);
     mlx_put_image_to_window(data->mlx->mlx, data->mlx->win, data->mlx->img, 0, 0);
 }
 
