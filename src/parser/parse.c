@@ -17,8 +17,8 @@ void print_gamevar(const t_game *g)
 	printf("map                   : [%p]\n",   (void*)g->map);
     printf("map_width             : [%d]\n",   g->map_width);
     printf("map_height            : [%d]\n",   g->map_height);
-    printf("player_x              : [%d]\n",   g->player_x);
-    printf("player_y              : [%d]\n",   g->player_y);
+    printf("player_x              : [%f]\n",   g->player_x);
+    printf("player_y              : [%f]\n",   g->player_y);
     printf("player_dir            : [%c]\n",   g->player_dir ? g->player_dir        : '0');
     printf("has_player_dir        : [%d]\n",   g->has_player_dir);
     printf("has_no                : [%d]\n",   g->has_no);
@@ -157,8 +157,8 @@ int	map_is_valid(char *str, t_game *gamevar)
 			&& gamevar->has_player_dir == 0)
 		{
 			gamevar->player_dir = str[i];
-			gamevar->player_x = i + 1;
-			gamevar->player_y = gamevar->map_height;
+			gamevar->player_x = i;
+			gamevar->player_y = gamevar->map_height - 1;
 			gamevar->has_player_dir = 1;
 			i++;
 			if (i > gamevar->map_width)

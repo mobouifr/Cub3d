@@ -94,8 +94,8 @@ int main(int argc, char **argv)
     data.map->rows = parsed->map_height;
     data.map->cols = parsed->map_width;
     
-    data.player->player_x = parsed->player_x;
-    data.player->player_y = parsed->player_y;
+    data.player->player_x = parsed->player_x + 0.5;
+    data.player->player_y = parsed->player_y + 0.5;
     data.player->rot_angle = dir_to_angle(parsed->player_dir);
 
     data.colors->ceiling_color_hex = parsed->ceiling_color_hex;
