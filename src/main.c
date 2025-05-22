@@ -27,7 +27,8 @@ unsigned int get_tex_color(t_texture *tex, int x, int y)
 
 t_texture *load_texture(t_data *data, char *path)
 {
-    t_texture *tex = malloc(sizeof(t_texture));
+    t_texture *tex = ft_gc_malloc(&data->gc, sizeof(t_texture));
+    // t_texture *tex = malloc(sizeof(t_texture));
     if (!tex)
     {
         printf("Memory allocation failed for texture\n");
@@ -84,7 +85,7 @@ int main(int argc, char **argv)
 {
     t_data data;
     t_game *parsed;
-   
+
     parsed = parser(argc, argv);
     initialize_data(&data);
     print_gamevar(parsed);
@@ -116,6 +117,7 @@ int main(int argc, char **argv)
         i++;
     }
     free(data.map->map);
+    ft_gc_free_all(&data.gc);
     return 0;
 }
 

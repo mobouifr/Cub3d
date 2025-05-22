@@ -1,6 +1,7 @@
 NAME = cub3D
 
 SRC = src/main.c\
+		src/ft_malloc.c\
 		src/2d_map.c\
 		src/init_data.c\
 		src/handle_input.c\
@@ -21,7 +22,7 @@ SRC = src/main.c\
 		utils/libft/ft_strcmp.c \
 
 CC = cc $(INC)
-CFLAGS = -Werror -Wextra -Wall -g3 -fsanitize=address
+CFLAGS = -Werror -Wextra -Wall #-g3 -fsanitize=address
 OBJ = $(SRC:.c=.o)
 INC = -I./includes/
 

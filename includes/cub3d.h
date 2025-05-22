@@ -68,6 +68,18 @@ typedef struct s_texture
 
 // -end-
 
+/*Garbage collector*/
+typedef struct s_gc_node
+{
+    void                *ptr;
+    struct s_gc_node    *next;
+}   t_gc_node;
+
+typedef struct s_gc
+{
+    t_gc_node *head;
+}   t_gc;
+
 
 typedef struct s_colors
 {
@@ -115,6 +127,7 @@ typedef struct s_data
 	t_mlx		*mlx;
 	t_texture	*textures[4];
 	t_colors	*colors;
+	t_gc		gc;
 }				t_data;
 
 void			draw_map_2d(t_data *data, char **map, int rows, int cols);
@@ -124,7 +137,9 @@ void			my_mlx_pixel_put(t_data *data, int x, int y, int color);
 char			*get_next_line(int fd);
 t_game			*parser(int argc, char **argv);
 void			print_gamevar(const t_game *g);
-
+/*Garbagr Collector*/
+void *ft_gc_malloc(t_gc *gc, size_t size);
+void ft_gc_free_all(t_gc *gc);
 /*init_data*/
 void initialize_data(t_data *data);
 void init_player_data(t_data *data);
@@ -146,5 +161,8 @@ void draw_map_2d(t_data *data, char **map, int rows, int cols);
 void draw_line(t_data *data, int x1, int y1, int x2, int y2, int color);
 void draw_player_facing_line(t_data *data);
 void draw_player(t_data *data);
+
+unsigned int get_tex_color(t_texture *tex, int x, int y);
+int get_texture_index(double ray_dir_x, double ray_dir_y, int side_hit);
 
 #endif
