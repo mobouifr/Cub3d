@@ -125,4 +125,26 @@ char			*get_next_line(int fd);
 t_game			*parser(int argc, char **argv);
 void			print_gamevar(const t_game *g);
 
+/*init_data*/
+void initialize_data(t_data *data);
+void init_player_data(t_data *data);
+/*Handle input*/
+int handle_keypress(int keycode, t_data *data);
+int key_released(int keycode, t_data *data);
+/*player_movement*/
+void move_player(t_data *data);
+void strafe_player(t_data *data, int direction);
+void rotate_player(t_data *data, int direction);
+int is_walkable(t_data *data, double new_x, double new_y);
+/*Rendering*/
+void draw(t_data *data);
+void clear_image(t_data *data);
+void cast_rays(t_data *data);
+double cast_ray(t_data *data, double ray_angle, int *side_hit);
+/*2d drawing*/
+void draw_map_2d(t_data *data, char **map, int rows, int cols);
+void draw_line(t_data *data, int x1, int y1, int x2, int y2, int color);
+void draw_player_facing_line(t_data *data);
+void draw_player(t_data *data);
+
 #endif

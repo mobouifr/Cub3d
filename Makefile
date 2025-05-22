@@ -1,7 +1,11 @@
 NAME = cub3D
 
 SRC = src/main.c\
-		src/map.c\
+		src/2d_map.c\
+		src/init_data.c\
+		src/handle_input.c\
+		src/player_movement.c\
+		src/redering.c\
 		src/mlx.c\
 		src/parser/parse.c\
 		utils/get_next_line/get_next_line.c\
