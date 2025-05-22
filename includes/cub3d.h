@@ -117,7 +117,7 @@ typedef struct s_data
 	t_colors	*colors;
 }				t_data;
 
-void			draw_map(t_data *data, char **map, int rows, int cols);
+void			draw_map_2d(t_data *data, char **map, int rows, int cols);
 void			mlx_start(t_data *data);
 int				close_window(t_data *data);
 void			my_mlx_pixel_put(t_data *data, int x, int y, int color);

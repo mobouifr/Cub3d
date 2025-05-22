@@ -1,6 +1,6 @@
 #include "cub3d.h"
 
-void draw_map(t_data *data, char **map, int rows, int cols)
+void draw_map_2d(t_data *data, char **map, int rows, int cols)
 {
     int i, j, x, y;
     int tile_x, tile_y;
@@ -18,8 +18,6 @@ void draw_map(t_data *data, char **map, int rows, int cols)
                 color = 0xFFFFFF; // White for empty spaces
             else if (map[i][j] == '1')
                 color = 0x000000; // Black for walls
-
-            // Draw the grid lines and tiles
             y = 0;
             while (y < TILE_SIZE)
             {
