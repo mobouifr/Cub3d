@@ -25,7 +25,7 @@ static int	wrdcount(char const *str, char c)
 		{
 			count++;
 			while (str[i] != '\0' && str[i] != c)
-			i++;
+				i++;
 		}
 		else if (str[i] == c)
 			i++;
@@ -105,19 +105,19 @@ char	**ft_split(char const *s, char c)
 /*
  int	main(void)
  {
- 	char const    *input_string;
- 	char        **result;
- 	int            i;
+	char const    *input_string;
+	char        **result;
+	int            i;
 
- 	input_string = "lkhdra";
+	input_string = "lkhdra";
 
- 	result = ft_split(input_string, NULL);
- 	i = 0;
- 	while (result[i])
- 	{
- 		printf("%s\n", result[i]);
- 		i++;
- 	}
- 	system("leaks a.out");
- 	return (0);
+	result = ft_split(input_string, NULL);
+	i = 0;
+	while (result[i])
+	{
+		printf("%s\n", result[i]);
+		i++;
+	}
+	system("leaks a.out");
+	return (0);
  }*/

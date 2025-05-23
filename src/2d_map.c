@@ -1,5 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   2d_map.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/23 11:46:02 by mamir             #+#    #+#             */
+/*   Updated: 2025/05/23 11:47:35 by mamir            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 
+/**
 void draw_map_2d(t_data *data, char **map, int rows, int cols)
 {
     int i, j, x, y;
@@ -26,7 +39,7 @@ void draw_map_2d(t_data *data, char **map, int rows, int cols)
                 {
                     // Draw the grid lines
                     if (x == 0 || y == 0)
-                        my_mlx_pixel_put(data, tile_x + x, tile_y + y, 0x808080); // Gray grid
+                        my_mlx_pixel_put(data, tile_x + x, tile_y + y, 0x808080);
                     else
                         my_mlx_pixel_put(data, tile_x + x, tile_y + y, color);
 
@@ -71,8 +84,10 @@ void draw_player_facing_line(t_data *data)
 {
     double angle = data->player->rot_angle;
     int line_length = 50;
-    int line_end_x = data->player->player_x * TILE_SIZE + cos(angle) * line_length;
-    int line_end_y = data->player->player_y * TILE_SIZE + sin(angle) * line_length;
+    int line_end_x = data->player->player_x 
+                    * TILE_SIZE + cos(angle) * line_length;
+    int line_end_y = data->player->player_y 
+                    * TILE_SIZE + sin(angle) * line_length;
     int x1 = data->player->player_x * TILE_SIZE;
     int y1 = data->player->player_y * TILE_SIZE;    
     draw_line(data, x1, y1, line_end_x, line_end_y, 0xFF0000);  
@@ -95,9 +110,10 @@ void draw_player(t_data *data)
         int px = -square_size / 2;
         while (px <= square_size / 2)
         {
-            my_mlx_pixel_put(data, player_x + px, player_y + py, 0xFF0000); // Red color for the square
+            my_mlx_pixel_put(data, player_x + px, player_y + py, 0xFF0000);
             px++;
         }
         py++;
     }
 }
+**/

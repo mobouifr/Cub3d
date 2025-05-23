@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/23 11:52:35 by mamir             #+#    #+#             */
+/*   Updated: 2025/05/23 11:52:36 by mamir            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 #include <math.h>
 
@@ -93,30 +105,19 @@ int main(int argc, char **argv)
     data.map->map = parsed->map;
     data.map->rows = parsed->map_height;
     data.map->cols = parsed->map_width;
-    
+
     data.player->player_x = parsed->player_x + 0.5;
     data.player->player_y = parsed->player_y + 0.5;
     data.player->rot_angle = dir_to_angle(parsed->player_dir);
-
+    
     data.colors->ceiling_color_hex = parsed->ceiling_color_hex;
     data.colors->floor_color_hex = parsed->floor_color_hex;
-    
     mlx_start(&data);
-    
     data.textures[0] = load_texture(&data, parsed->no_path);
     data.textures[1] = load_texture(&data, parsed->so_path);
     data.textures[2] = load_texture(&data, parsed->ea_path);
     data.textures[3] = load_texture(&data, parsed->we_path);
-    
     start_game(&data);
-
-    int i = 0;
-    while (i < data.map->rows)
-    {
-        free(data.map->map[i]);
-        i++;
-    }
-    free(data.map->map);
     ft_gc_free_all(&data.gc);
     return 0;
 }
