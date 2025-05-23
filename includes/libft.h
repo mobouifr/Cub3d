@@ -6,7 +6,7 @@
 /*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 15:58:34 by mobouifr          #+#    #+#             */
-/*   Updated: 2025/05/23 15:51:19 by mobouifr         ###   ########.fr       */
+/*   Updated: 2025/05/23 16:23:28 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,6 @@
 # include <unistd.h>
 # include <fcntl.h>
 # include "cub3d.h"
-
-
 /* Part 1 functions */
 int		ft_isalpha(int c);
 int		ft_isdigit(int c);

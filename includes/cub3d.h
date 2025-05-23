@@ -6,7 +6,7 @@
 /*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 11:49:22 by mamir             #+#    #+#             */
-/*   Updated: 2025/05/23 16:22:43 by mobouifr         ###   ########.fr       */
+/*   Updated: 2025/05/23 16:23:09 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,6 @@
 # define CUB3D_H
 
 # define TILE_SIZE 32
-
-
-
 # include <fcntl.h>
 # include <limits.h>
 # include <math.h>
@@ -26,7 +23,6 @@
 # include <stdlib.h>
 # include <string.h>
 # include <unistd.h>
-
 
 # ifndef M_PI
 #  define M_PI 3.14159265358979323846   /* pi */
