@@ -1,4 +1,5 @@
 #include "cub3d.h"
+#include "libft.h"
 
 void print_gamevar(const t_game *g)
 {
@@ -60,7 +61,7 @@ int	line_is_empty(char *str)
 	return (0);
 }
 
-void	valid_extention_check(t_game *game)
+void	valid_extention_check(t_game *game, t_data *data)
 {
 	int		i;
 	int		j;
@@ -72,6 +73,7 @@ void	valid_extention_check(t_game *game)
 	if (game->mapfile_path[i - 5] == '/' || i <= j)
 	{
 		write(2, "Error Wrong file extension\n", 27);
+		ft_gc_free_all(&data->gc);
 		exit(1);
 	}
 	while (j >= 0)
@@ -79,6 +81,7 @@ void	valid_extention_check(t_game *game)
 		if (game->mapfile_path[i] != str[j])
 		{
 			write(2, "Error Wrong file extension\n", 27);
+			ft_gc_free_all(&data->gc);
 			exit(1);
 		}
 		i--;
@@ -86,16 +89,17 @@ void	valid_extention_check(t_game *game)
 	}
 }
 
-int	parse_rgb_color(int *color_code, char *str)
+int	parse_rgb_color(int *color_code, char *str, t_data *data)
 {
 	char	**rgb;
 	int		i;
 
 	i = 0;
-	rgb = ft_split(str, ',');
+	rgb = ft_split(str, ',', data);
 	if (!rgb || !rgb[0] || !rgb[1] || !rgb[2])
 	{
 		write(2, "rgb error\n", 10);
+		ft_gc_free_all(&data->gc);
 		exit(1);
 	}
 	while (i < 3)
@@ -104,6 +108,7 @@ int	parse_rgb_color(int *color_code, char *str)
 		if (color_code[i] < 0 || color_code[i] > 255)
 		{
 			write(2, "rgb range error\n", 16);
+			ft_gc_free_all(&data->gc);
 			exit(1);
 		}
 		i++;
@@ -195,62 +200,64 @@ char *set_terminator(char *str)
 }
 
 
-void	parse_line(int fd, t_game *gamevar)
+void	parse_line(int fd, t_game *gamevar, t_data *data)
 {
 	char	*line;
 	char	**parts;
 
-	line = get_next_line(fd);
+	line = get_next_line(fd, data);
 	while (line != NULL)
 	{
 		if (line_is_empty(line))
 		{
-			line = get_next_line(fd);
+			line = get_next_line(fd, data);
 			continue ;
 		}
 
 		if (!has_direction(gamevar))
 		{
+			ft_gc_free_all(&data->gc);
 			exit(1);
 		}
 		if (gamevar->state == INITIAL
 			|| gamevar->state == PARSE_DIRECTION_STATE)
 		{
-			parts = ft_split(line, ' ');
+			parts = ft_split(line, ' ', data);
 			if (!parts || !parts[0] || !parts[1] || parts[2])
 			{
 				write(2, "input	error\n", 12);
+				ft_gc_free_all(&data->gc);
 				exit(1);
 			}
 			gamevar->state = PARSE_DIRECTION_STATE;
 			if (ft_strcmp(parts[0], "NO") == 0)
 			{
-				gamevar->no_path = ft_strdup(set_terminator(parts[1]));
+				gamevar->no_path = ft_strdup(set_terminator(parts[1]), data);
 				gamevar->has_no++;
 			}
 			else if (ft_strcmp(parts[0], "SO") == 0)
 			{
-				gamevar->so_path = ft_strdup(set_terminator(parts[1]));
+				gamevar->so_path = ft_strdup(set_terminator(parts[1]), data);
 				gamevar->has_so++;
 			}
 			else if (ft_strcmp(parts[0], "WE") == 0)
 			{
-				gamevar->we_path = ft_strdup(set_terminator(parts[1]));
+				gamevar->we_path = ft_strdup(set_terminator(parts[1]), data);
 				gamevar->has_we++;
 			}
 			else if (ft_strcmp(parts[0], "EA") == 0)
 			{
-				gamevar->ea_path = ft_strdup(set_terminator(parts[1]));
+				gamevar->ea_path = ft_strdup(set_terminator(parts[1]), data);
 				gamevar->has_ea++;
 			}
 			else if (ft_strcmp(parts[0], "F") == 0)
 			{
-				gamevar->floor_color_hex = parse_rgb_color(gamevar->floor_color, parts[1]);
+				gamevar->floor_color_hex = parse_rgb_color(gamevar->floor_color, parts[1], data);
 				gamevar->has_floor++;
 			}
 			else if (ft_strcmp(parts[0], "C") == 0)
 			{
-				gamevar->ceiling_color_hex = parse_rgb_color(gamevar->ceiling_color, parts[1]);
+				gamevar->ceiling_color_hex = parse_rgb_color(gamevar->ceiling_color, parts[1], data);
 				gamevar->has_ceiling++;
 			}
 		}
@@ -260,16 +267,17 @@ void	parse_line(int fd, t_game *gamevar)
 			if (!map_is_valid(line, gamevar))
 			{
 				close(fd);
-
+				ft_gc_free_all(&data->gc);
 				exit(1);
 			}
 		}
-		line = get_next_line(fd);
+		line = get_next_line(fd, data);
 	}
 	if (gamevar->map_height == 0 || gamevar->has_player_dir == 0 || gamevar->player_dir == 0)
 	{
 		write (2, "Error, map not found\n", 21);
 		close(fd);
+		ft_gc_free_all(&data->gc);
 		exit(1);
 	}
 	close(fd);
@@ -309,7 +317,7 @@ void	var_init(t_game *gamevar)
 	gamevar->state = INITIAL;
 }
 
-void	fill_map(t_game *gamevar)
+void	fill_map(t_game *gamevar, t_data *data)
 {
 	int		i;
 	char	*line;
@@ -318,12 +326,15 @@ void	fill_map(t_game *gamevar)
 	int		j;
 
 	i = 0;
-	gamevar->map = malloc(sizeof(char *) * (gamevar->map_height + 1));
+	gamevar->map = ft_gc_malloc(&data->gc, sizeof(char *) * (gamevar->map_height + 1));
 	if (gamevar->map == NULL)
+	{
+		ft_gc_free_all(&data->gc);
 		exit(1);
+	}
 	while (i < gamevar->map_height)
 	{
-		gamevar->map[i] = malloc(sizeof(char) * (gamevar->map_width + 1));
+		gamevar->map[i] = ft_gc_malloc(&data->gc, sizeof(char) * (gamevar->map_width + 1));
 		if (gamevar->map[i] == NULL)
 		{
 			return ;
@@ -333,10 +344,9 @@ void	fill_map(t_game *gamevar)
 	gamevar->map[gamevar->map_height] = NULL;
 	fd = open(gamevar->mapfile_path, O_RDONLY);
 	count = 0;
-	line = get_next_line(fd);
+	line = get_next_line(fd, data);
 	while (line != NULL)
 	{
-		// printf("line : %s\n", line);
 		if (ft_strnstr(line, "NO", ft_strlen_v2(line)) || ft_strnstr(line, "SO",
 				ft_strlen_v2(line)) || ft_strnstr(line, "WE",
 				ft_strlen_v2(line)) || ft_strnstr(line, "EA",
@@ -344,22 +354,21 @@ void	fill_map(t_game *gamevar)
 			|| ft_strnstr(line, "C", ft_strlen_v2(line)))
 		{
 			count++;
-			line = get_next_line(fd);
+			line = get_next_line(fd, data);
 			continue ;
 		}
 		if (count >= 6)
 		{
 			break ;
 		}
-		line = get_next_line(fd);
+		line = get_next_line(fd, data);
 	}
 	i = 0;
 	while (line != NULL)
 	{
-		printf("height : %d\n", gamevar->map_height);
 		if (line_is_empty(line))
 		{
-			line = get_next_line(fd);
+			line = get_next_line(fd, data);
 			continue ;
 		}
 		else if (i < gamevar->map_height)
@@ -378,7 +387,7 @@ void	fill_map(t_game *gamevar)
 			gamevar->map[i][j] = '\0';
 			i++;
 		}
-		line = get_next_line(fd);
+		line = get_next_line(fd, data);
 	}
 	i = 0;
 	while (gamevar->map[0][i] != '\0')
@@ -386,6 +395,7 @@ void	fill_map(t_game *gamevar)
 		if (gamevar->map[0][i] != '1')
 		{
 			write(2, "error (first map row should all 1)\n", 35);
+			ft_gc_free_all(&data->gc);
 			exit(1);
 		}
 		i++;
@@ -396,13 +406,14 @@ void	fill_map(t_game *gamevar)
 		if (gamevar->map[gamevar->map_height - 1][i] != '1')
 		{
 			write(2, "error (last map row should be all 1)\n", 37);
+			ft_gc_free_all(&data->gc);
 			exit(1);
 		}
 		i++;
 	}
 }
 
-t_game	*parser(int argc, char **argv)
+t_game	*parser(int argc, char **argv, t_data *data)
 {
 	int fd;
 	t_game *gamevar;
@@ -414,25 +425,27 @@ t_game	*parser(int argc, char **argv)
 		exit(1);
 	}
 
-	gamevar = malloc(sizeof(t_game));
+	gamevar = ft_gc_malloc(&data->gc, sizeof(t_game));
 	if (!gamevar)
 	{
 		write(2, "allocation Error\n", 17);
+		ft_gc_free_all(&data->gc);
 		exit (1);
 	}
 	var_init(gamevar);
 
 	gamevar->mapfile_path = argv[1];
-	valid_extention_check(gamevar);
+	valid_extention_check(gamevar, data);
 	fd = open(gamevar->mapfile_path, O_RDONLY);
 	if (fd == -1)
 	{
 		write(2, "Fd error\n", 9);
+		ft_gc_free_all(&data->gc);
 		exit(1);
 	}
-	parse_line(fd, gamevar);
+	parse_line(fd, gamevar, data);
 
-	fill_map(gamevar);
+	fill_map(gamevar, data);
 	close(fd);
 	//int j = 0;
 	// while (gamevar->map[j] != NULL)

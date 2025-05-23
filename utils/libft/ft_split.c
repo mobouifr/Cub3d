@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mobouifr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 09:50:39 by mobouifr          #+#    #+#             */
-/*   Updated: 2023/12/10 11:27:00 by mobouifr         ###   ########.fr       */
+/*   Updated: 2025/05/23 15:46:53 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "cub3d.h"
 
 static int	wrdcount(char const *str, char c)
 {
@@ -45,24 +45,24 @@ static size_t	wrdlen(char const *s, char c)
 	return (i);
 }
 
-static char	**ft_free(char **ptr, size_t j)
-{
-	while (j > 0)
-	{
-		free(ptr[j - 1]);
-		j--;
-	}
-	free(ptr);
-	return (NULL);
-}
+// static char	**ft_free(char **ptr, size_t j, t_data *data)
+// {
+// 	while (j > 0)
+// 	{
+// 		free(ptr[j - 1]);
+// 		j--;
+// 	}
+// 	free(ptr);
+// 	return (NULL);
+// }
 
-static char	*help(char const *s, char c)
+static char	*help(char const *s, char c, t_data *data)
 {
 	size_t	i;
 	char	*ptr;
 
 	i = 0;
-	ptr = (char *)malloc(wrdlen(s, c) + 1);
+	ptr = (char *)ft_gc_malloc(&data->gc, wrdlen(s, c) + 1);
 	if (!ptr)
 		return (NULL);
 	while (s[i] != '\0' && s[i] != c)
@@ -74,14 +74,14 @@ static char	*help(char const *s, char c)
 	return (ptr);
 }
 
-char	**ft_split(char const *s, char c)
+char	**ft_split(char const *s, char c, t_data *data)
 {
 	char	**ptr;
 	size_t	i;
 
 	if (!s)
 		return (NULL);
-	ptr = (char **)malloc((wrdcount(s, c) + 1) * sizeof(char *));
+	ptr = (char **)ft_gc_malloc(&data->gc, (wrdcount(s, c) + 1) * sizeof(char *));
 	if (!ptr)
 		return (NULL);
 	i = 0;
@@ -91,10 +91,13 @@ char	**ft_split(char const *s, char c)
 			s++;
 		if (*s != '\0')
 		{
-			ptr[i] = help(s, c);
+			ptr[i] = help(s, c, data);
 			if (ptr[i] == NULL)
-				return (ft_free(ptr, i));
-			i++;
+			{
+				ft_gc_free_all(&data->gc);
+				return (NULL);
+			}
+				i++;
 		}
 		while (*s != '\0' && *s != c)
 			s++;

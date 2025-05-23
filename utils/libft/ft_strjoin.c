@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mobouifr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 16:00:55 by mobouifr          #+#    #+#             */
-/*   Updated: 2023/12/10 11:47:03 by mobouifr         ###   ########.fr       */
+/*   Updated: 2025/05/23 16:02:36 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "cub3d.h"
 #include "libft.h"
 
-char	*ft_strjoin(char const *s1, char const *s2)
+char	*ft_strjoin(char const *s1, char const *s2, t_data *data)
 {
 	size_t	i;
 	size_t	j;
@@ -23,10 +24,10 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	if (!s1 && !s2)
 		return (NULL);
 	if (!s1 && s2)
-		return (ft_strdup(s2));
+		return (ft_strdup(s2, data));
 	else if (!s2 && s1)
-		return (ft_strdup(s1));
-	s3 = malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
+		return (ft_strdup(s1, data));
+	s3 = ft_gc_malloc(&data->gc, ft_strlen(s1) + ft_strlen(s2) + 1);
 	if (!s3)
 		return (NULL);
 	while (s1[i] != '\0')

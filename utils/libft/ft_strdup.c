@@ -3,22 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mobouifr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 21:28:01 by mobouifr          #+#    #+#             */
-/*   Updated: 2023/12/09 16:37:44 by mobouifr         ###   ########.fr       */
+/*   Updated: 2025/05/23 16:02:07 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "cub3d.h"
 #include "libft.h"
 
-char	*ft_strdup(const char *s1)
+char	*ft_strdup(const char *s1, t_data *data)
 {
 	size_t	i;
 	char	*s2;
 
 	i = 0;
-	s2 = malloc(ft_strlen(s1) + 1);
+	s2 = ft_gc_malloc(&data->gc, ft_strlen(s1) + 1);
 	if (!s2)
 	{
 		return (NULL);

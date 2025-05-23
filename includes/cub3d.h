@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 11:49:22 by mamir             #+#    #+#             */
-/*   Updated: 2025/05/23 11:49:23 by mamir            ###   ########.fr       */
+/*   Updated: 2025/05/23 16:01:59 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 
 # define TILE_SIZE 32
 
-# include "libft.h"
+
+
 # include <fcntl.h>
 # include <limits.h>
 # include <math.h>
@@ -25,6 +26,7 @@
 # include <stdlib.h>
 # include <string.h>
 # include <unistd.h>
+
 
 # ifndef M_PI
 #  define M_PI 3.14159265358979323846   /* pi */
@@ -146,8 +148,8 @@ void			draw_map_2d(t_data *data, char **map, int rows, int cols);
 void			mlx_start(t_data *data);
 int				close_window(t_data *data);
 void			my_mlx_pixel_put(t_data *data, int x, int y, int color);
-char			*get_next_line(int fd);
-t_game			*parser(int argc, char **argv);
+char			*get_next_line(int fd, t_data *data);
+t_game			*parser(int argc, char **argv, t_data *data);
 void			print_gamevar(const t_game *g);
 /*Garbagr Collector*/
 void *ft_gc_malloc(t_gc *gc, size_t size);

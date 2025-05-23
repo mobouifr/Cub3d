@@ -6,19 +6,20 @@
 /*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 11:35:29 by mobouifr          #+#    #+#             */
-/*   Updated: 2025/05/03 09:47:51 by mobouifr         ###   ########.fr       */
+/*   Updated: 2025/05/23 15:59:38 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "cub3d.h"
 #include "get_next_line.h"
 
-char	*line_catcher(int fd, char *buffer1)
+char	*line_catcher(int fd, char *buffer1, t_data *data)
 {
 	char	*temp_buffer;
 	ssize_t	count;
 
 	count = 1;
-	temp_buffer = malloc((size_t)BUFFER_SIZE + 1);
+	temp_buffer = ft_gc_malloc(&data->gc, (size_t)BUFFER_SIZE + 1);
 	if (!temp_buffer)
 		return (NULL);
 	while (count > 0)
@@ -32,7 +33,7 @@ char	*line_catcher(int fd, char *buffer1)
 		if (count == 0)
 			break ;
 		temp_buffer[count] = '\0';
-		buffer1 = ft_strjoin(buffer1, temp_buffer);
+		buffer1 = ft_strjoin(buffer1, temp_buffer, data);
 		if (ft_strchr(buffer1, '\n'))
 			break ;
 	}
@@ -40,7 +41,7 @@ char	*line_catcher(int fd, char *buffer1)
 	return (buffer1);
 }
 
-char	*get_new_line(char *buffer)
+char	*get_new_line(char *buffer, t_data *data)
 {
 	size_t		i;
 	char		*buff;
@@ -52,7 +53,7 @@ char	*get_new_line(char *buffer)
 		i++;
 	if (buffer[i] == '\n')
 		i++;
-	buff = malloc(i + 1);
+	buff = ft_gc_malloc(&data->gc, i + 1);
 	if (!buff)
 		return (NULL);
 	i = 0;
@@ -67,7 +68,7 @@ char	*get_new_line(char *buffer)
 	return (buff);
 }
 
-char	*reset_buffer(char *buffer)
+char	*reset_buffer(char *buffer, t_data *data)
 {
 	size_t		i;
 	size_t		j;
@@ -84,7 +85,7 @@ char	*reset_buffer(char *buffer)
 	}
 	if (buffer[i] == '\n')
 		i++;
-	str = malloc(ft_strlen(buffer) - i + 1);
+	str = ft_gc_malloc(&data->gc, ft_strlen(buffer) - i + 1);
 	if (!str)
 		return (NULL);
 	while (buffer[i] != '\0')
@@ -94,7 +95,7 @@ char	*reset_buffer(char *buffer)
 	return (str);
 }
 
-char	*get_next_line(int fd)
+char	*get_next_line(int fd, t_data *data)
 {
 	char		*buff;
 	char		*string;
@@ -104,14 +105,14 @@ char	*get_next_line(int fd)
 	{
 		return (NULL);
 	}
-	string = line_catcher(fd, buffer);
+	string = line_catcher(fd, buffer, data);
 	if (string == NULL)
 	{
 		free(buffer);
 		buffer = NULL;
 		return (NULL);
 	}
-	buff = get_new_line(string);
-	buffer = reset_buffer(string);
+	buff = get_new_line(string, data);
+	buffer = reset_buffer(string, data);
 	return (buff);
 }
