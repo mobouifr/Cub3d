@@ -6,7 +6,7 @@
 /*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 11:52:35 by mamir             #+#    #+#             */
-/*   Updated: 2025/05/23 15:53:37 by mobouifr         ###   ########.fr       */
+/*   Updated: 2025/05/23 16:41:04 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ int main(int argc, char **argv)
 
     parsed = parser(argc, argv, &data);
     initialize_data(&data);
-    print_gamevar(parsed);
+    // print_gamevar(parsed);
     
     data.map->map = parsed->map;
     data.map->rows = parsed->map_height;

@@ -6,7 +6,7 @@
 /*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 11:35:29 by mobouifr          #+#    #+#             */
-/*   Updated: 2025/05/23 15:59:38 by mobouifr         ###   ########.fr       */
+/*   Updated: 2025/05/23 16:43:54 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char	*line_catcher(int fd, char *buffer1, t_data *data)
 		count = read(fd, temp_buffer, BUFFER_SIZE);
 		if (count < 0)
 		{
-			free(temp_buffer);
+			// free(temp_buffer);
 			return (NULL);
 		}
 		if (count == 0)
@@ -37,7 +37,7 @@ char	*line_catcher(int fd, char *buffer1, t_data *data)
 		if (ft_strchr(buffer1, '\n'))
 			break ;
 	}
-	free(temp_buffer);
+	// free(temp_buffer);
 	return (buffer1);
 }
 
@@ -80,7 +80,7 @@ char	*reset_buffer(char *buffer, t_data *data)
 		i++;
 	if (buffer[i] == '\0')
 	{
-		free(buffer);
+		// free(buffer);
 		return (NULL);
 	}
 	if (buffer[i] == '\n')
@@ -91,7 +91,7 @@ char	*reset_buffer(char *buffer, t_data *data)
 	while (buffer[i] != '\0')
 		str[j++] = buffer[i++];
 	str[j] = '\0';
-	free(buffer);
+	// free(buffer);
 	return (str);
 }
 
@@ -108,7 +108,7 @@ char	*get_next_line(int fd, t_data *data)
 	string = line_catcher(fd, buffer, data);
 	if (string == NULL)
 	{
-		free(buffer);
+		// free(buffer);
 		buffer = NULL;
 		return (NULL);
 	}

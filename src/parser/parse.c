@@ -36,18 +36,18 @@ int rgb_to_hex(int r, int g, int b)
 	return (r * 256 * 256) + (g * 256) + b;
 }
 
-void	ft_free(char **arr)
-{
-	int	i;
+// void	ft_free(char **arr)
+// {
+// 	int	i;
 
-	i = 0;
-	while (arr && arr[i])
-	{
-		free(arr[i]);
-		i++;
-	}
-	free(arr);
-}
+// 	i = 0;
+// 	while (arr && arr[i])
+// 	{
+// 		free(arr[i]);
+// 		i++;
+// 	}
+// 	free(arr);
+// }
 
 int	line_is_empty(char *str)
 {
