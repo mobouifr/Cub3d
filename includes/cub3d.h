@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 11:49:22 by mamir             #+#    #+#             */
-/*   Updated: 2025/05/23 11:49:23 by mamir            ###   ########.fr       */
+/*   Updated: 2025/05/23 15:37:26 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,8 @@ typedef struct s_game
 	char		**map;
 	int			map_width;
 	int			map_height;
-	double			player_x;
-	double			player_y;
+	double		player_x;
+	double		player_y;
 	char		player_dir;
 	int			has_player_dir;
 	int			has_no;
@@ -83,15 +83,14 @@ typedef struct s_texture
 /*Garbage collector*/
 typedef struct s_gc_node
 {
-    void                *ptr;
-    struct s_gc_node    *next;
-}   t_gc_node;
+	void				*ptr;
+	struct s_gc_node	*next;
+}	t_gc_node;
 
 typedef struct s_gc
 {
-    t_gc_node *head;
-}   t_gc;
-
+	t_gc_node	*head;
+}	t_gc;
 
 typedef struct s_colors
 {
@@ -142,7 +141,6 @@ typedef struct s_data
 	t_gc		gc;
 }				t_data;
 
-void			draw_map_2d(t_data *data, char **map, int rows, int cols);
 void			mlx_start(t_data *data);
 int				close_window(t_data *data);
 void			my_mlx_pixel_put(t_data *data, int x, int y, int color);
@@ -150,31 +148,33 @@ char			*get_next_line(int fd);
 t_game			*parser(int argc, char **argv);
 void			print_gamevar(const t_game *g);
 /*Garbagr Collector*/
-void *ft_gc_malloc(t_gc *gc, size_t size);
-void ft_gc_free_all(t_gc *gc);
+void			*ft_gc_malloc(t_gc *gc, size_t size);
+void			ft_gc_free_all(t_gc *gc);
 /*init_data*/
-void initialize_data(t_data *data);
-void init_player_data(t_data *data);
+void			initialize_data(t_data *data);
+void			init_player_data(t_data *data);
 /*Handle input*/
-int handle_keypress(int keycode, t_data *data);
-int key_released(int keycode, t_data *data);
+int				handle_keypress(int keycode, t_data *data);
+int				key_released(int keycode, t_data *data);
 /*player_movement*/
-void move_player(t_data *data);
-void strafe_player(t_data *data, int direction);
-void rotate_player(t_data *data, int direction);
-int is_walkable(t_data *data, double new_x, double new_y);
+void			move_player(t_data *data);
+void			strafe_player(t_data *data, int direction);
+void			rotate_player(t_data *data, int direction);
+int				is_walkable(t_data *data, double new_x, double new_y);
 /*Rendering*/
-void draw(t_data *data);
-void clear_image(t_data *data);
-void cast_rays(t_data *data);
-double cast_ray(t_data *data, double ray_angle, int *side_hit);
-/*2d drawing*/
+void			draw(t_data *data);
+void			clear_image(t_data *data);
+void			cast_rays(t_data *data);
+double			cast_ray(t_data *data, double ray_angle, int *side_hit);
+/*2d drawing
+void			draw_map_2d(t_data *data, char **map, int rows, int cols);
 void draw_map_2d(t_data *data, char **map, int rows, int cols);
 void draw_line(t_data *data, int x1, int y1, int x2, int y2, int color);
 void draw_player_facing_line(t_data *data);
 void draw_player(t_data *data);
-
-unsigned int get_tex_color(t_texture *tex, int x, int y);
-int get_texture_index(double ray_dir_x, double ray_dir_y, int side_hit);
+*/
+unsigned int	get_tex_color(t_texture *tex, int x, int y);
+int				get_texture_index(double ray_dir_x, double ray_dir_y,
+					int side_hit);
 
 #endif
