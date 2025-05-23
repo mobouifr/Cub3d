@@ -176,6 +176,7 @@ int	map_is_valid(char *str, t_game *gamevar)
 			return (0);
 		}
 	}
+
 	return (1);
 }
 
@@ -265,6 +266,12 @@ void	parse_line(int fd, t_game *gamevar)
 		}
 		line = get_next_line(fd);
 	}
+	if (gamevar->map_height == 0 || gamevar->has_player_dir == 0 || gamevar->player_dir == 0)
+	{
+		write (2, "Error, map not found\n", 21);
+		close(fd);
+		exit(1);
+	}
 	close(fd);
 }
 
@@ -349,6 +356,7 @@ void	fill_map(t_game *gamevar)
 	i = 0;
 	while (line != NULL)
 	{
+		printf("height : %d\n", gamevar->map_height);
 		if (line_is_empty(line))
 		{
 			line = get_next_line(fd);
@@ -426,11 +434,11 @@ t_game	*parser(int argc, char **argv)
 
 	fill_map(gamevar);
 	close(fd);
-	int j = 0;
-	while (gamevar->map[j] != NULL)
-	{
-		printf("%s\n", gamevar->map[j]);
-		j++;
-	}
+	//int j = 0;
+	// while (gamevar->map[j] != NULL)
+	// {
+	// 	printf("%s\n", gamevar->map[j]);
+	// 	j++;
+	// }
 	return (gamevar);
 }
