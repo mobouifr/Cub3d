@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macbook <macbook@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 11:49:22 by mamir             #+#    #+#             */
-/*   Updated: 2025/05/24 18:21:39 by macbook          ###   ########.fr       */
+/*   Updated: 2025/05/24 18:49:35 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,21 @@ typedef enum e_state
 	PARSE_DIRECTION_STATE,
 	PARSE_MAP_STATE
 }				t_state;
+
+typedef struct s_dda
+{
+    double	dir_x;
+    double	dir_y;
+    int		map_x;
+    int		map_y;
+    double	delta_x;
+    double	delta_y;
+    int		step_x;
+    int		step_y;
+    double	side_x;
+    double	side_y;
+    int		side_hit;
+}	t_dda;
 
 typedef struct s_game
 {
