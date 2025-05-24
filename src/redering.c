@@ -31,8 +31,6 @@ void draw(t_data *data)
         y++;
     }
     cast_rays(data);
-    draw_map_2d(data, data->map->map, data->map->rows, data->map->cols);
-    draw_player(data);
     mlx_put_image_to_window(data->mlx->mlx, data->mlx->win, data->mlx->img, 0, 0);
 }
 

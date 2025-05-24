@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: macbook <macbook@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 11:52:35 by mamir             #+#    #+#             */
-/*   Updated: 2025/05/24 13:42:03 by mobouifr         ###   ########.fr       */
+/*   Updated: 2025/05/24 14:00:04 by macbook          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,6 @@ void start_game(t_data *data)
     mlx_loop_hook(data->mlx->mlx, game_loop, data); 
     mlx_loop(data->mlx->mlx);  
 }
-
 
 double dir_to_angle(char c)
 {
