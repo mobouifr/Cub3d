@@ -6,7 +6,7 @@
 /*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 11:52:35 by mamir             #+#    #+#             */
-/*   Updated: 2025/05/24 13:42:03 by mobouifr         ###   ########.fr       */
+/*   Updated: 2025/05/25 00:36:19 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,20 +40,23 @@ unsigned int get_tex_color(t_texture *tex, int x, int y)
 t_texture *load_texture(t_data *data, char *path)
 {
     t_texture *tex = ft_gc_malloc(&data->gc, sizeof(t_texture));
-    // t_texture *tex = malloc(sizeof(t_texture));
+    tex->img_successfully_loaded = 1;
     if (!tex)
     {
-        printf("Memory allocation failed for texture\n");
-        ft_gc_free_all(&data->gc);
-        exit(1);
+        // printf("Memory allocation failed for texture\n");
+        // tex->img_successfully_loaded = 0;
+        // close_window(data);
+        // exit(1);
     }
     tex->img = mlx_xpm_file_to_image(data->mlx->mlx, path, &tex->width, &tex->height);
-    //printf ("{%s} - %d - %d", path, tex->width, tex->height);
+    printf ("{%p}", tex->img);
     if (!tex->img)
     {
-        printf("Failed to load texture %s\n", path);
-        ft_gc_free_all(&data->gc);
-        exit(1);
+        return (NULL);
+        // printf("Failed to load texture %s\n", path);
+        // tex->img_successfully_loaded = 0;
+        // close_window(data);
+        // exit(1);
     }
     tex->addr = mlx_get_data_addr(tex->img, &tex->bpp, &tex->line_len, &tex->endian);
     return tex;
@@ -114,10 +117,39 @@ int main(int argc, char **argv)
     data.colors->ceiling_color_hex = parsed->ceiling_color_hex;
     data.colors->floor_color_hex = parsed->floor_color_hex;
     mlx_start(&data);
+
     data.textures[0] = load_texture(&data, parsed->no_path);
+    if (data.textures[0] == NULL)
+    {
+        printf("Failed to load texture %s\n", parsed->no_path);
+        close_window(&data);
+        exit(1);
+    }
+    
     data.textures[1] = load_texture(&data, parsed->so_path);
+    if (data.textures[1] == NULL)
+    {
+        printf("Failed to load texture %s\n", parsed->so_path);
+        close_window(&data);
+        exit(1);
+    }
+    
     data.textures[2] = load_texture(&data, parsed->ea_path);
+    if (data.textures[2] == NULL)
+    {
+        printf("Failed to load texture %s\n", parsed->ea_path);
+        close_window(&data);
+        exit(1);
+    }
+    
     data.textures[3] = load_texture(&data, parsed->we_path);
+    if (data.textures[3] == NULL)
+    {
+        printf("Failed to load texture %s\n", parsed->we_path);
+        close_window(&data);
+        exit(1);
+    }
+    
     start_game(&data);
     ft_gc_free_all(&data.gc);
     return 0;

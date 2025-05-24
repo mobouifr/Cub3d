@@ -6,7 +6,7 @@
 /*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 11:49:22 by mamir             #+#    #+#             */
-/*   Updated: 2025/05/24 13:53:10 by mobouifr         ###   ########.fr       */
+/*   Updated: 2025/05/24 23:50:06 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ typedef struct s_texture
 	int			endian;
 	int			width;
 	int			height;
+	int			img_successfully_loaded;
 }				t_texture;
 
 // -end-

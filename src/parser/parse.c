@@ -199,6 +199,17 @@ char *set_terminator(char *str)
 	return (str);
 }
 
+void check_file_exists(char *filepath, t_data *data)
+{
+    int fd = open(filepath, O_RDONLY);
+    if (fd == -1)
+    {
+		write(2, "Error texture file path not found\n", 34);
+		ft_gc_free_all(&data->gc);
+		exit(1);
+    }
+    close(fd);
+}
 
 void	parse_line(int fd, t_game *gamevar, t_data *data)
 {
@@ -213,7 +224,6 @@ void	parse_line(int fd, t_game *gamevar, t_data *data)
 			line = get_next_line(fd, data);
 			continue ;
 		}
-
 		if (!has_direction(gamevar))
 		{
 			ft_gc_free_all(&data->gc);
@@ -232,22 +242,26 @@ void	parse_line(int fd, t_game *gamevar, t_data *data)
 			gamevar->state = PARSE_DIRECTION_STATE;
 			if (ft_strcmp(parts[0], "NO") == 0)
 			{
-				gamevar->no_path = ft_strdup(set_terminator(parts[1]), data);
+				gamevar->no_path = ft_strdup(parts[1], data);
+				check_file_exists(gamevar->no_path, data);
 				gamevar->has_no++;
 			}
 			else if (ft_strcmp(parts[0], "SO") == 0)
 			{
-				gamevar->so_path = ft_strdup(set_terminator(parts[1]), data);
+				gamevar->so_path = ft_strdup(parts[1], data);
+				check_file_exists(gamevar->so_path, data);
 				gamevar->has_so++;
 			}
 			else if (ft_strcmp(parts[0], "WE") == 0)
 			{
-				gamevar->we_path = ft_strdup(set_terminator(parts[1]), data);
+				gamevar->we_path = ft_strdup(parts[1], data);
+				check_file_exists(gamevar->we_path, data);
 				gamevar->has_we++;
 			}
 			else if (ft_strcmp(parts[0], "EA") == 0)
 			{
-				gamevar->ea_path = ft_strdup(set_terminator(parts[1]), data);
+				gamevar->ea_path = ft_strdup(parts[1], data);
+				check_file_exists(gamevar->ea_path, data);
 				gamevar->has_ea++;
 			}
 			else if (ft_strcmp(parts[0], "F") == 0)
