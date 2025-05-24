@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: macbook <macbook@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 11:49:22 by mamir             #+#    #+#             */
-/*   Updated: 2025/05/24 13:53:10 by mobouifr         ###   ########.fr       */
+/*   Updated: 2025/05/24 18:21:39 by macbook          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,14 @@ typedef struct s_gc
 {
 	t_gc_node	*head;
 }	t_gc;
+
+typedef struct s_draw_vars {
+    int line_height;
+    int unclipped_draw_start;
+    int draw_start;
+    int draw_end;
+    int tex_x;
+} t_draw_vars;
 
 typedef struct s_colors
 {
