@@ -278,6 +278,7 @@ void	parse_line(int fd, t_game *gamevar, t_data *data)
 		write (2, "Error, map not found\n", 21);
 		close(fd);
 		ft_gc_free_all(&data->gc);
+		puts("after gc free ALL");
 		exit(1);
 	}
 	close(fd);

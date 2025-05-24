@@ -6,7 +6,7 @@
 /*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 11:45:23 by mamir             #+#    #+#             */
-/*   Updated: 2025/05/23 16:47:34 by mobouifr         ###   ########.fr       */
+/*   Updated: 2025/05/23 20:39:14 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,9 @@ void	ft_gc_free_all(t_gc *gc)
 	t_gc_node	*node;
 	t_gc_node	*next;
 
+
+	if (!gc || !gc->head)
+		return;
 	node = gc->head;
 	while (node)
 	{
