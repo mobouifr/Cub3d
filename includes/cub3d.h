@@ -6,7 +6,7 @@
 /*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 11:49:22 by mamir             #+#    #+#             */
-/*   Updated: 2025/05/23 20:31:35 by mobouifr         ###   ########.fr       */
+/*   Updated: 2025/05/24 13:53:10 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,13 +164,13 @@ void			draw(t_data *data);
 void			clear_image(t_data *data);
 void			cast_rays(t_data *data);
 double			cast_ray(t_data *data, double ray_angle, int *side_hit);
-/*2d drawing
+/**2d draw
 void			draw_map_2d(t_data *data, char **map, int rows, int cols);
 void draw_map_2d(t_data *data, char **map, int rows, int cols);
 void draw_line(t_data *data, int x1, int y1, int x2, int y2, int color);
 void draw_player_facing_line(t_data *data);
 void draw_player(t_data *data);
-*/
+**/
 unsigned int	get_tex_color(t_texture *tex, int x, int y);
 int				get_texture_index(double ray_dir_x, double ray_dir_y,
 					int side_hit);

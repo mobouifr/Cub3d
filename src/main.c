@@ -6,7 +6,7 @@
 /*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 11:52:35 by mamir             #+#    #+#             */
-/*   Updated: 2025/05/23 16:41:04 by mobouifr         ###   ########.fr       */
+/*   Updated: 2025/05/24 13:42:03 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ t_texture *load_texture(t_data *data, char *path)
         exit(1);
     }
     tex->img = mlx_xpm_file_to_image(data->mlx->mlx, path, &tex->width, &tex->height);
-    printf ("{%s} - %d - %d", path, tex->width, tex->height);
+    //printf ("{%s} - %d - %d", path, tex->width, tex->height);
     if (!tex->img)
     {
         printf("Failed to load texture %s\n", path);
@@ -99,8 +99,8 @@ int main(int argc, char **argv)
     t_data data;
     t_game *parsed;
 
-    parsed = parser(argc, argv, &data);
     initialize_data(&data);
+    parsed = parser(argc, argv, &data);
     // print_gamevar(parsed);
     
     data.map->map = parsed->map;
