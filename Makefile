@@ -7,6 +7,9 @@ SRC = src/main.c\
 		src/handle_input.c\
 		src/player_movement.c\
 		src/rendering.c\
+		src/rays.c\
+		src/ray_helper_1.c\
+		src/ray_helper_2.c\
 		src/mlx.c\
 		src/parser/parse.c\
 		utils/get_next_line/get_next_line.c\

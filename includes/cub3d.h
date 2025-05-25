@@ -6,7 +6,7 @@
 /*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 11:49:22 by mamir             #+#    #+#             */
-/*   Updated: 2025/05/24 18:49:35 by mamir            ###   ########.fr       */
+/*   Updated: 2025/05/25 14:17:53 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,60 +36,60 @@ typedef enum e_state
 	INITIAL,
 	PARSE_DIRECTION_STATE,
 	PARSE_MAP_STATE
-}				t_state;
+}						t_state;
 
 typedef struct s_dda
 {
-    double	dir_x;
-    double	dir_y;
-    int		map_x;
-    int		map_y;
-    double	delta_x;
-    double	delta_y;
-    int		step_x;
-    int		step_y;
-    double	side_x;
-    double	side_y;
-    int		side_hit;
-}	t_dda;
+	double				dir_x;
+	double				dir_y;
+	int					map_x;
+	int					map_y;
+	double				delta_x;
+	double				delta_y;
+	int					step_x;
+	int					step_y;
+	double				side_x;
+	double				side_y;
+	int					side_hit;
+}						t_dda;
 
 typedef struct s_game
 {
-	char		*mapfile_path;
-	char		*no_path;
-	char		*so_path;
-	char		*we_path;
-	char		*ea_path;
-	int			floor_color[3];
-	int			ceiling_color[3];
-	int			floor_color_hex;
-	int			ceiling_color_hex;
-	char		**map;
-	int			map_width;
-	int			map_height;
-	double		player_x;
-	double		player_y;
-	char		player_dir;
-	int			has_player_dir;
-	int			has_no;
-	int			has_so;
-	int			has_we;
-	int			has_ea;
-	int			has_floor;
-	int			has_ceiling;
-	t_state		state;
-}				t_game;
+	char				*mapfile_path;
+	char				*no_path;
+	char				*so_path;
+	char				*we_path;
+	char				*ea_path;
+	int					floor_color[3];
+	int					ceiling_color[3];
+	int					floor_color_hex;
+	int					ceiling_color_hex;
+	char				**map;
+	int					map_width;
+	int					map_height;
+	double				player_x;
+	double				player_y;
+	char				player_dir;
+	int					has_player_dir;
+	int					has_no;
+	int					has_so;
+	int					has_we;
+	int					has_ea;
+	int					has_floor;
+	int					has_ceiling;
+	t_state				state;
+}						t_game;
 
 typedef struct s_texture
 {
-	void		*img;
-	char		*addr;
-	int			bpp;
-	int			line_len;
-	int			endian;
-	int			width;
-	int			height;
-}				t_texture;
+	void				*img;
+	char				*addr;
+	int					bpp;
+	int					line_len;
+	int					endian;
+	int					width;
+	int					height;
+}						t_texture;
 
 // -end-
 
@@ -98,104 +98,125 @@ typedef struct s_gc_node
 {
 	void				*ptr;
 	struct s_gc_node	*next;
-}	t_gc_node;
+}						t_gc_node;
 
 typedef struct s_gc
 {
-	t_gc_node	*head;
-}	t_gc;
+	t_gc_node			*head;
+}						t_gc;
 
-typedef struct s_draw_vars {
-    int line_height;
-    int unclipped_draw_start;
-    int draw_start;
-    int draw_end;
-    int tex_x;
-} t_draw_vars;
+typedef struct s_draw_vars
+{
+	int					line_height;
+	int					unclipped_draw_start;
+	int					draw_start;
+	int					draw_end;
+	int					tex_x;
+}						t_draw_vars;
 
 typedef struct s_colors
 {
-	int			floor_color_hex;
-	int			ceiling_color_hex;
-}				t_colors;
+	int					floor_color_hex;
+	int					ceiling_color_hex;
+}						t_colors;
 typedef struct s_player
 {
-	double		player_x;
-	double		player_y;
-	int			radius;
-	int			turn_dir;
-	int			strafe_dir;
-	int			walk_dir;
-	double		rot_angle;
-	double		move_speed;
-	double		rot_speed;
+	double				player_x;
+	double				player_y;
+	int					radius;
+	int					turn_dir;
+	int					strafe_dir;
+	int					walk_dir;
+	double				rot_angle;
+	double				move_speed;
+	double				rot_speed;
 
-}				t_player;
+}						t_player;
 
 typedef struct s_map
 {
-	int			rows;
-	int			cols;
-	char		**map;
-}				t_map;
+	int					rows;
+	int					cols;
+	char				**map;
+}						t_map;
 
 typedef struct s_mlx
 {
-	void		*mlx;
-	void		*win;
-	void		*img;
-	char		*addr;
-	int			bpp;
-	int			line_length;
-	int			win_width;
-	int			win_height;
-	int			endian;
-}				t_mlx;
+	void				*mlx;
+	void				*win;
+	void				*img;
+	char				*addr;
+	int					bpp;
+	int					line_length;
+	int					win_width;
+	int					win_height;
+	int					endian;
+}						t_mlx;
 
 typedef struct s_data
 {
-	t_player	*player;
-	t_map		*map;
-	t_mlx		*mlx;
-	t_texture	*textures[4];
-	t_colors	*colors;
-	t_gc		gc;
-}				t_data;
+	t_player			*player;
+	t_map				*map;
+	t_mlx				*mlx;
+	t_texture			*textures[4];
+	t_colors			*colors;
+	t_gc				gc;
+}						t_data;
 
-void			mlx_start(t_data *data);
-int				close_window(t_data *data);
-void			my_mlx_pixel_put(t_data *data, int x, int y, int color);
-char			*get_next_line(int fd, t_data *data);
-t_game			*parser(int argc, char **argv, t_data *data);
-void			print_gamevar(const t_game *g);
+void					mlx_start(t_data *data);
+int						close_window(t_data *data);
+void					my_mlx_pixel_put(t_data *data, int x, int y, int color);
+char					*get_next_line(int fd, t_data *data);
+t_game					*parser(int argc, char **argv, t_data *data);
+void					print_gamevar(const t_game *g);
 /*Garbagr Collector*/
-void			*ft_gc_malloc(t_gc *gc, size_t size);
-void			ft_gc_free_all(t_gc *gc);
+void					*ft_gc_malloc(t_gc *gc, size_t size);
+void					ft_gc_free_all(t_gc *gc);
 /*init_data*/
-void			initialize_data(t_data *data);
-void			init_player_data(t_data *data);
+void					initialize_data(t_data *data);
+void					init_player_data(t_data *data);
 /*Handle input*/
-int				handle_keypress(int keycode, t_data *data);
-int				key_released(int keycode, t_data *data);
+int						handle_keypress(int keycode, t_data *data);
+int						key_released(int keycode, t_data *data);
 /*player_movement*/
-void			move_player(t_data *data);
-void			strafe_player(t_data *data, int direction);
-void			rotate_player(t_data *data, int direction);
-int				is_walkable(t_data *data, double new_x, double new_y);
+void					move_player(t_data *data);
+void					strafe_player(t_data *data, int direction);
+void					rotate_player(t_data *data, int direction);
+int						is_walkable(t_data *data, double new_x, double new_y);
 /*Rendering*/
-void			draw(t_data *data);
-void			clear_image(t_data *data);
-void			cast_rays(t_data *data);
-double			cast_ray(t_data *data, double ray_angle, int *side_hit);
+void					draw(t_data *data);
+void					clear_image(t_data *data);
+void					cast_rays(t_data *data);
+double					cast_ray(t_data *data, double ray_angle, int *side_hit);
+/*Ray functions & helpers*/
+void					init_draw_vars(t_draw_vars *vars, int win_h,
+							double dist);
+void					init_ray_vars(double ray_angle, t_data *data,
+							t_dda *dda);
+void					init_step_dist_x(t_data *data, t_dda *dda);
+void					init_step_dist_y(t_data *data, t_dda *dda);
+int						dda_loop(t_data *data, t_dda *dda);
+double					get_wall_x(t_data *data, double dist, double ray_angle,
+							int side);
+void					draw_wall_slice(t_data *data, t_texture *tex, int i,
+							t_draw_vars *vars);
+int						get_tex_index_for_column(double ray_angle,
+							int side_hit);
+t_texture				*get_tex_for_column(t_data *data, int tex_index);
+int						get_tex_x_for_column(t_texture *tex, double wall_x,
+							int side_hit, double ray_angle);
 /**2d draw
-void			draw_map_2d(t_data *data, char **map, int rows, int cols);
-void draw_map_2d(t_data *data, char **map, int rows, int cols);
-void draw_line(t_data *data, int x1, int y1, int x2, int y2, int color);
-void draw_player_facing_line(t_data *data);
-void draw_player(t_data *data);
+void	draw_map_2d(t_data *data, char **map, int rows,
+							int cols);
+void	draw_map_2d(t_data *data, char **map, int rows,
+							int cols);
+void	draw_line(t_data *data, int x1, int y1, int x2, int y2,
+							int color);
+void					draw_player_facing_line(t_data *data);
+void					draw_player(t_data *data);
 **/
-unsigned int	get_tex_color(t_texture *tex, int x, int y);
-int				get_texture_index(double ray_dir_x, double ray_dir_y,
-					int side_hit);
+unsigned int			get_tex_color(t_texture *tex, int x, int y);
+int						get_texture_index(double ray_dir_x, double ray_dir_y,
+							int side_hit);
 
 #endif

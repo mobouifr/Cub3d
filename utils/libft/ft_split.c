@@ -81,7 +81,8 @@ char	**ft_split(char const *s, char c, t_data *data)
 
 	if (!s)
 		return (NULL);
-	ptr = (char **)ft_gc_malloc(&data->gc, (wrdcount(s, c) + 1) * sizeof(char *));
+	ptr = (char **)ft_gc_malloc(&data->gc, (wrdcount(s, c) + 1)
+			* sizeof(char *));
 	if (!ptr)
 		return (NULL);
 	i = 0;
@@ -97,7 +98,7 @@ char	**ft_split(char const *s, char c, t_data *data)
 				ft_gc_free_all(&data->gc);
 				return (NULL);
 			}
-				i++;
+			i++;
 		}
 		while (*s != '\0' && *s != c)
 			s++;
