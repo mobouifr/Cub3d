@@ -20,9 +20,10 @@ SRC = src/main.c\
 		utils/libft/ft_strjoin.c \
 		utils/libft/ft_split.c \
 		utils/libft/ft_strcmp.c \
+		utils/libft/ft_strtrim.c \
 
 CC = cc $(INC)
-CFLAGS = -Werror -Wextra -Wall -g3 -fsanitize=address
+CFLAGS = -Werror -Wextra -Wall #-g3 -fsanitize=address
 OBJ = $(SRC:.c=.o)
 INC = -I./includes/
 

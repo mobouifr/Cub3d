@@ -144,17 +144,19 @@ int	ft_strlen_v2(char *str)
 	return (i);
 }
 
-int	map_is_valid(char *str, t_game *gamevar)
+int	map_is_valid(char *str, t_game *gamevar, t_data *data)
 {
 	int	i;
-	int	len;
+	int len;
+	char *trimmed_str = ft_strtrim(str, " ", data);
 
 	i = 0;
-	len = ft_strlen_v2(str);
+	len = ft_strlen_v2(trimmed_str);
 	while (str[i] != '\0' && str[i] != '\n')
 	{
-		if (str[0] != '1' || str[len - 1] != '1')
+		if (trimmed_str[0] != '1' || trimmed_str[len - 1] != '1')
 		{
+			printf("trimmed_str : {%s}\n", trimmed_str);
 			write(2, "map error(map rows should be closed by walls)\n", 46);
 			return (0);
 		}
@@ -197,6 +199,39 @@ char *set_terminator(char *str)
 	str[i] = '\0';
 	
 	return (str);
+}
+void	var_init(t_game *gamevar)
+{
+	int	i;
+
+	i = 0;
+	gamevar->mapfile_path = NULL;
+	gamevar->no_path = NULL;
+	gamevar->so_path = NULL;
+	gamevar->we_path = NULL;
+	gamevar->ea_path = NULL;
+	while (i < 3)
+	{
+		gamevar->floor_color[i] = -1;
+		gamevar->ceiling_color[i] = -1;
+		i++;
+	}
+	gamevar->floor_color_hex = 0;
+	gamevar->ceiling_color_hex = 0;
+	gamevar->map = NULL;
+	gamevar->map_width = 0;
+	gamevar->map_height = 0;
+	gamevar->player_x = -1;
+	gamevar->player_y = -1;
+	gamevar->player_dir = '\0';
+	gamevar->has_player_dir = 0;
+	gamevar->has_no = 0;
+	gamevar->has_so = 0;
+	gamevar->has_we = 0;
+	gamevar->has_ea = 0;
+	gamevar->has_floor = 0;
+	gamevar->has_ceiling = 0;
+	gamevar->state = INITIAL;
 }
 
 void check_file_exists(char *filepath, t_data *data)
@@ -278,7 +313,7 @@ void	parse_line(int fd, t_game *gamevar, t_data *data)
 		if (gamevar->state == PARSE_MAP_STATE)
 		{
 			gamevar->map_height++;
-			if (!map_is_valid(line, gamevar))
+			if (!map_is_valid(line, gamevar, data))
 			{
 				close(fd);
 				ft_gc_free_all(&data->gc);
@@ -298,39 +333,6 @@ void	parse_line(int fd, t_game *gamevar, t_data *data)
 	close(fd);
 }
 
-void	var_init(t_game *gamevar)
-{
-	int	i;
-
-	i = 0;
-	gamevar->mapfile_path = NULL;
-	gamevar->no_path = NULL;
-	gamevar->so_path = NULL;
-	gamevar->we_path = NULL;
-	gamevar->ea_path = NULL;
-	while (i < 3)
-	{
-		gamevar->floor_color[i] = -1;
-		gamevar->ceiling_color[i] = -1;
-		i++;
-	}
-	gamevar->floor_color_hex = 0;
-	gamevar->ceiling_color_hex = 0;
-	gamevar->map = NULL;
-	gamevar->map_width = 0;
-	gamevar->map_height = 0;
-	gamevar->player_x = -1;
-	gamevar->player_y = -1;
-	gamevar->player_dir = '\0';
-	gamevar->has_player_dir = 0;
-	gamevar->has_no = 0;
-	gamevar->has_so = 0;
-	gamevar->has_we = 0;
-	gamevar->has_ea = 0;
-	gamevar->has_floor = 0;
-	gamevar->has_ceiling = 0;
-	gamevar->state = INITIAL;
-}
 
 void	fill_map(t_game *gamevar, t_data *data)
 {
@@ -341,6 +343,7 @@ void	fill_map(t_game *gamevar, t_data *data)
 	int		j;
 
 	i = 0;
+	printf("gamevar->map_width : %d\n", gamevar->map_width);
 	gamevar->map = ft_gc_malloc(&data->gc, sizeof(char *) * (gamevar->map_height + 1));
 	if (gamevar->map == NULL)
 	{
@@ -389,14 +392,21 @@ void	fill_map(t_game *gamevar, t_data *data)
 		else if (i < gamevar->map_height)
 		{
 			j = 0;
+			while (line[j] == ' ')
+			{
+				gamevar->map[i][j] = '1';
+				j++;
+			}
 			while (line[j] != '\0' && line[j] != '\n')
 			{
+				if (line[j] == ' ')
+				 	line[j] = '1';
 				gamevar->map[i][j] = line[j];
 				j++;
 			}
 			while (j < gamevar->map_width)
 			{
-				gamevar->map[i][j] = '\0';
+				gamevar->map[i][j] = '1';
 				j++;
 			}
 			gamevar->map[i][j] = '\0';
@@ -407,6 +417,9 @@ void	fill_map(t_game *gamevar, t_data *data)
 	i = 0;
 	while (gamevar->map[0][i] != '\0')
 	{
+		if (gamevar->map[0][i] == ' ')
+			gamevar->map[0][i] = '1';
+
 		if (gamevar->map[0][i] != '1')
 		{
 			write(2, "error (first map row should all 1)\n", 35);
@@ -418,6 +431,9 @@ void	fill_map(t_game *gamevar, t_data *data)
 	i = 0;
 	while (gamevar->map[gamevar->map_height - 1][i])
 	{
+		if (gamevar->map[gamevar->map_height - 1][i] == ' ')
+			gamevar->map[gamevar->map_height - 1][i] = '1';
+			
 		if (gamevar->map[gamevar->map_height - 1][i] != '1')
 		{
 			write(2, "error (last map row should be all 1)\n", 37);
@@ -433,13 +449,12 @@ t_game	*parser(int argc, char **argv, t_data *data)
 	int fd;
 	t_game *gamevar;
 
-	//print_gamevar(gamevar);
 	if (argc != 2)
 	{
 		write(2, "Wrong number of argument\n", 25);
 		exit(1);
 	}
-
+	
 	gamevar = ft_gc_malloc(&data->gc, sizeof(t_game));
 	if (!gamevar)
 	{
@@ -448,7 +463,7 @@ t_game	*parser(int argc, char **argv, t_data *data)
 		exit (1);
 	}
 	var_init(gamevar);
-
+	
 	gamevar->mapfile_path = argv[1];
 	valid_extention_check(gamevar, data);
 	fd = open(gamevar->mapfile_path, O_RDONLY);
@@ -459,14 +474,15 @@ t_game	*parser(int argc, char **argv, t_data *data)
 		exit(1);
 	}
 	parse_line(fd, gamevar, data);
-
+	
 	fill_map(gamevar, data);
 	close(fd);
-	//int j = 0;
-	// while (gamevar->map[j] != NULL)
-	// {
-	// 	printf("%s\n", gamevar->map[j]);
-	// 	j++;
-	// }
+	int j = 0;
+	while (gamevar->map[j] != NULL)
+	{
+			printf("%s\n", gamevar->map[j]);
+			j++;
+	}
+		print_gamevar(gamevar);
 	return (gamevar);
 }

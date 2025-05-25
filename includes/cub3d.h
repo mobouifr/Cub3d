@@ -6,7 +6,7 @@
 /*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 11:49:22 by mamir             #+#    #+#             */
-/*   Updated: 2025/05/24 23:50:06 by mobouifr         ###   ########.fr       */
+/*   Updated: 2025/05/25 14:14:15 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,6 +146,7 @@ void			my_mlx_pixel_put(t_data *data, int x, int y, int color);
 char			*get_next_line(int fd, t_data *data);
 t_game			*parser(int argc, char **argv, t_data *data);
 void			print_gamevar(const t_game *g);
+int				ft_strlen_v2(char *str);
 /*Garbagr Collector*/
 void			*ft_gc_malloc(t_gc *gc, size_t size);
 void			ft_gc_free_all(t_gc *gc);
