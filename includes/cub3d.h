@@ -6,7 +6,7 @@
 /*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 11:49:22 by mamir             #+#    #+#             */
-/*   Updated: 2025/05/25 21:45:30 by mobouifr         ###   ########.fr       */
+/*   Updated: 2025/05/25 21:54:30 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,30 +78,6 @@ typedef struct s_game
 	int					has_ceiling;
 	t_state				state;
 }						t_game;
-	char				*mapfile_path;
-	char				*no_path;
-	char				*so_path;
-	char				*we_path;
-	char				*ea_path;
-	int					floor_color[3];
-	int					ceiling_color[3];
-	int					floor_color_hex;
-	int					ceiling_color_hex;
-	char				**map;
-	int					map_width;
-	int					map_height;
-	double				player_x;
-	double				player_y;
-	char				player_dir;
-	int					has_player_dir;
-	int					has_no;
-	int					has_so;
-	int					has_we;
-	int					has_ea;
-	int					has_floor;
-	int					has_ceiling;
-	t_state				state;
-}						t_game;
 
 typedef struct s_texture
 {
@@ -143,9 +119,7 @@ typedef struct s_colors
 	int					floor_color_hex;
 	int					ceiling_color_hex;
 }						t_colors;
-	int					floor_color_hex;
-	int					ceiling_color_hex;
-}						t_colors;
+
 typedef struct s_player
 {
 	double				player_x;
@@ -157,17 +131,7 @@ typedef struct s_player
 	double				rot_angle;
 	double				move_speed;
 	double				rot_speed;
-	double				player_x;
-	double				player_y;
-	int					radius;
-	int					turn_dir;
-	int					strafe_dir;
-	int					walk_dir;
-	double				rot_angle;
-	double				move_speed;
-	double				rot_speed;
 
-}						t_player;
 }						t_player;
 
 typedef struct s_map
@@ -176,23 +140,9 @@ typedef struct s_map
 	int					cols;
 	char				**map;
 }						t_map;
-	int					rows;
-	int					cols;
-	char				**map;
-}						t_map;
 
 typedef struct s_mlx
 {
-	void				*mlx;
-	void				*win;
-	void				*img;
-	char				*addr;
-	int					bpp;
-	int					line_length;
-	int					win_width;
-	int					win_height;
-	int					endian;
-}						t_mlx;
 	void				*mlx;
 	void				*win;
 	void				*img;

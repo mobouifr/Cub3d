@@ -6,7 +6,7 @@
 /*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 11:52:35 by mamir             #+#    #+#             */
-/*   Updated: 2025/05/25 21:42:35 by mobouifr         ###   ########.fr       */
+/*   Updated: 2025/05/25 21:42:45 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,3 +155,4 @@ int	main(int argc, char **argv)
     ft_gc_free_all(&data.gc);
     return 0;
 }
+
