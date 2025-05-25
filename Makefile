@@ -12,6 +12,9 @@ SRC = src/main.c\
 		src/parser/vars_init.c\
 		src/parser/utils.c\
 		src/parser/parse_checks.c\
+		src/parser/map_row_checks.c\
+		src/parser/map_and_config_parser.c\
+		src/parser/line_parser.c\
 		utils/get_next_line/get_next_line.c\
 		utils/libft/ft_atoi.c \
 		utils/libft/ft_isspace.c \

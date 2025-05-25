@@ -6,7 +6,7 @@
 /*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 15:34:22 by mobouifr          #+#    #+#             */
-/*   Updated: 2025/05/25 15:35:37 by mobouifr         ###   ########.fr       */
+/*   Updated: 2025/05/25 18:07:42 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,5 +63,5 @@ void	vars_init(t_game *gamevar)
 	init_floor_ceiling_vars(gamevar);
 	init_map_vars(gamevar);
 	init_player_vars(gamevar);
-	gamevar->state = INITIAL;
+	gamevar->state = PARSE_TEXTURES_AND_COLORS_STATE;
 }

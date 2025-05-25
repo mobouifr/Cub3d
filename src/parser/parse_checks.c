@@ -6,7 +6,7 @@
 /*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 16:00:46 by mobouifr          #+#    #+#             */
-/*   Updated: 2025/05/25 16:02:56 by mobouifr         ###   ########.fr       */
+/*   Updated: 2025/05/25 18:29:13 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int	parse_rgb_color(int *color_code, char *str, t_data *data)
 		+ color_code[2]);
 }
 
-int	has_direction(t_game *gamevar)
+int	has_directions(t_game *gamevar)
 {
 	if (gamevar->has_no >= 2 || gamevar->has_so >= 2 || gamevar->has_we >= 2
 		|| gamevar->has_ea >= 2 || gamevar->has_floor >= 2

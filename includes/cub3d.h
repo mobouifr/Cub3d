@@ -6,7 +6,7 @@
 /*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 11:49:22 by mamir             #+#    #+#             */
-/*   Updated: 2025/05/25 16:02:07 by mobouifr         ###   ########.fr       */
+/*   Updated: 2025/05/25 18:51:46 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,7 @@
 
 typedef enum e_state
 {
-	INITIAL,
-	PARSE_DIRECTION_STATE,
+	PARSE_TEXTURES_AND_COLORS_STATE,
 	PARSE_MAP_STATE
 }						t_state;
 
@@ -149,7 +148,14 @@ void					check_file_exists(char *filepath, t_data *data);
 void					valid_extention_check(t_game *game, t_data *data);
 int						parse_rgb_color(int *color_code, char *str,
 							t_data *data);
-int						has_direction(t_game *gamevar);
+int						has_directions(t_game *gamevar);
+int						map_row_is_valid(char *str, t_game *gamevar,
+							t_data *data);
+void					handle_texture_and_color_input(char *line,
+							t_game *gamevar, t_data *data);
+void					handle_map_row_input(int fd, char *line,
+							t_game *gamevar, t_data *data);
+void					parse_line(int fd, t_game *gamevar, t_data *data);
 
 void					mlx_start(t_data *data);
 int						close_window(t_data *data);
