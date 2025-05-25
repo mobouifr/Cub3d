@@ -1,27 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing_debug.c                                    :+:      :+:    :+:   */
+/*   print_gamevar.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 15:39:45 by mobouifr          #+#    #+#             */
-/*   Updated: 2025/05/25 15:44:27 by mobouifr         ###   ########.fr       */
+/*   Updated: 2025/05/25 21:58:01 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-static void print_flags(const t_game *g)
+static void	print_flags(const t_game *g)
 {
-    printf("has_player_dir        : [%d]\n",   g->has_player_dir);
-    printf("has_no                : [%d]\n",   g->has_no);
-    printf("has_so                : [%d]\n",   g->has_so);
-    printf("has_we                : [%d]\n",   g->has_we);
-    printf("has_ea                : [%d]\n",   g->has_ea);
-    printf("has_floor             : [%d]\n",   g->has_floor);
-    printf("has_ceiling           : [%d]\n",   g->has_ceiling);
+	printf("has_player_dir        : [%d]\n", g->has_player_dir);
+	printf("has_no                : [%d]\n", g->has_no);
+	printf("has_so                : [%d]\n", g->has_so);
+	printf("has_we                : [%d]\n", g->has_we);
+	printf("has_ea                : [%d]\n", g->has_ea);
+	printf("has_floor             : [%d]\n", g->has_floor);
+	printf("has_ceiling           : [%d]\n", g->has_ceiling);
 }
+
 void	print_gamevar(const t_game *g)
 {
 	printf("=== t_game contents ===\n");
@@ -41,8 +42,6 @@ void	print_gamevar(const t_game *g)
 	printf("map_height            : [%d]\n", g->map_height);
 	printf("player_x              : [%f]\n", g->player_x);
 	printf("player_y              : [%f]\n", g->player_y);
-	printf("player_dir            : [%c]\n",
-		g->player_dir ? g->player_dir : '0');
-    print_flags(g);
+	print_flags(g);
 	printf("========================\n");
 }
