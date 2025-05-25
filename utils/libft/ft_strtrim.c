@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strtrim.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mobouifr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 22:52:31 by mobouifr          #+#    #+#             */
-/*   Updated: 2023/12/09 17:58:59 by mobouifr         ###   ########.fr       */
+/*   Updated: 2025/05/25 14:15:29 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include "cub3d.h"
 
-char	*ft_strtrim(char const *s1, char const *set)
+char	*ft_strtrim(char const *s1, char const *set, t_data *data)
 {
 	size_t	i;
 	size_t	j;
@@ -22,14 +23,14 @@ char	*ft_strtrim(char const *s1, char const *set)
 	if (s1 == NULL || set == NULL)
 		return (NULL);
 	i = 0;
-	len = ft_strlen(s1);
-	while (s1[i] != '\0' && ft_strchr(set, s1[i]))
+	len = ft_strlen_v2((char *)s1);
+	while (s1[i] != '\0' && s1[i] != '\n' && ft_strchr(set, s1[i]))
 		i++;
 	while (len > i && s1[len - 1] && ft_strchr(set, s1[len - 1]))
 		len--;
 	if (len == i)
-		return (ft_strdup(""));
-	s2 = (char *)malloc((len - i + 1));
+		return (ft_strdup("", data));
+	s2 = (char *)ft_gc_malloc(&data->gc, (len - i + 1));
 	if (s2 == NULL)
 		return (NULL);
 	j = 0;

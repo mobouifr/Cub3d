@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mlx.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macbook <macbook@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 11:48:37 by mamir             #+#    #+#             */
-/*   Updated: 2025/05/24 13:58:33 by macbook          ###   ########.fr       */
+/*   Updated: 2025/05/25 21:46:23 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,16 @@ void	mlx_start(t_data *data)
 
 int	close_window(t_data *data)
 {
-	mlx_destroy_image(data->mlx->mlx, data->textures[0]->img);
-	mlx_destroy_image(data->mlx->mlx, data->textures[1]->img);
-	mlx_destroy_image(data->mlx->mlx, data->textures[2]->img);
-	mlx_destroy_image(data->mlx->mlx, data->textures[3]->img);
+	int i = 0;
+
+	while (i < 4)
+	{
+		if(data->textures[i] == NULL)
+			break ;
+		mlx_destroy_image(data->mlx->mlx, data->textures[i]->img);
+		i++;
+	}
+	
 	mlx_destroy_image(data->mlx->mlx, data->mlx->img);
 	mlx_clear_window(data->mlx->mlx, data->mlx->win);
 	mlx_destroy_window(data->mlx->mlx, data->mlx->win);
