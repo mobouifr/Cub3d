@@ -6,7 +6,7 @@
 /*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 11:49:22 by mamir             #+#    #+#             */
-/*   Updated: 2025/05/25 21:54:30 by mobouifr         ###   ########.fr       */
+/*   Updated: 2025/05/25 23:51:30 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,6 @@ typedef struct s_texture
 	int					endian;
 	int					width;
 	int					height;
-	int					img_successfully_loaded;
 }						t_texture;
 
 // -end-
@@ -192,6 +191,12 @@ void					skip_config_lines(int fd, t_data *data);
 void					validate_map_borders(t_game *gamevar, t_data *data);
 void					exit_error(char *str, t_data *data);
 void					fill_map(t_game *gamevar, t_data *data);
+int						get_texture_index(double ray_dir_x, double ray_dir_y,
+							int side_hit);
+unsigned int			get_tex_color(t_texture *tex, int x, int y);
+t_texture				*load_texture(t_data *data, char *path);
+void					safe_load_texture(t_data *data, t_texture **dest,
+							char *path);
 
 /*Garbagr Collector*/
 void					*ft_gc_malloc(t_gc *gc, size_t size);
@@ -257,11 +262,5 @@ void	draw_line(t_data *data, int x1, int y1, int x2, int y2,
 void					draw_player_facing_line(t_data *data);
 void					draw_player(t_data *data);
 **/
-unsigned int			get_tex_color(t_texture *tex, int x, int y);
-int						get_texture_index(double ray_dir_x, double ray_dir_y,
-							int side_hit);
-unsigned int			get_tex_color(t_texture *tex, int x, int y);
-int						get_texture_index(double ray_dir_x, double ray_dir_y,
-							int side_hit);
 
 #endif

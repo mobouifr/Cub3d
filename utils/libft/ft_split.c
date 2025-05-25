@@ -6,7 +6,7 @@
 /*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 09:50:39 by mobouifr          #+#    #+#             */
-/*   Updated: 2025/05/24 18:18:44 by mobouifr         ###   ########.fr       */
+/*   Updated: 2025/05/25 23:47:09 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,23 +38,12 @@ static size_t	wrdlen(char const *s, char c)
 	size_t	i;
 
 	i = 0;
-	while (s[i] != '\0'  && s[i] != '\n' && s[i] != c)
+	while (s[i] != '\0' && s[i] != '\n' && s[i] != c)
 	{
 		i++;
 	}
 	return (i);
 }
-
-// static char	**ft_free(char **ptr, size_t j, t_data *data)
-// {
-// 	while (j > 0)
-// 	{
-// 		free(ptr[j - 1]);
-// 		j--;
-// 	}
-// 	free(ptr);
-// 	return (NULL);
-// }
 
 static char	*help(char const *s, char c, t_data *data)
 {
@@ -65,7 +54,7 @@ static char	*help(char const *s, char c, t_data *data)
 	ptr = (char *)ft_gc_malloc(&data->gc, wrdlen(s, c) + 1);
 	if (!ptr)
 		return (NULL);
-	while (s[i] != '\0'  && s[i] != '\n' && s[i] != c)
+	while (s[i] != '\0' && s[i] != '\n' && s[i] != c)
 	{
 		ptr[i] = s[i];
 		i++;
@@ -92,15 +81,11 @@ char	**ft_split(char const *s, char c, t_data *data)
 			s++;
 		if (*s != '\0' && *s != '\n')
 		{
-			ptr[i] = help(s, c, data);
-			if (ptr[i] == NULL)
-			{
-				ft_gc_free_all(&data->gc);
-				return (NULL);
-			}
-			i++;
+			ptr[i++] = help(s, c, data);
+			if (ptr[i - 1] == NULL)
+				return (ft_gc_free_all(&data->gc), NULL);
 		}
-		while (*s != '\0'  && *s != '\n' && *s != c)
+		while (*s != '\0' && *s != '\n' && *s != c)
 			s++;
 	}
 	ptr[i] = NULL;

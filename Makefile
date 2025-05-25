@@ -20,6 +20,7 @@ SRC = src/main.c\
 		src/parser/line_parser.c\
 		src/parser/fill_map.c\
 		src/parser/fill_map_utils.c\
+		src/textures/texture_utils.c\
 		utils/get_next_line/get_next_line.c\
 		utils/libft/ft_atoi.c \
 		utils/libft/ft_isspace.c \
@@ -35,7 +36,7 @@ SRC = src/main.c\
 		utils/debug/parsing/print_gamevar.c
 
 CC = cc $(INC)
-CFLAGS = -Werror -Wextra -Wall #-g3 -fsanitize=address
+CFLAGS = -Werror -Wextra #-Wall -g3 -fsanitize=address
 OBJ = $(SRC:.c=.o)
 INC = -I./includes/
 
