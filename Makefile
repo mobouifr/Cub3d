@@ -9,6 +9,9 @@ SRC = src/main.c\
 		src/redering.c\
 		src/mlx.c\
 		src/parser/parse.c\
+		src/parser/vars_init.c\
+		src/parser/utils.c\
+		src/parser/parse_checks.c\
 		utils/get_next_line/get_next_line.c\
 		utils/libft/ft_atoi.c \
 		utils/libft/ft_isspace.c \
@@ -21,6 +24,7 @@ SRC = src/main.c\
 		utils/libft/ft_split.c \
 		utils/libft/ft_strcmp.c \
 		utils/libft/ft_strtrim.c \
+		utils/debug/parsing/print_gamevar.c
 
 CC = cc $(INC)
 CFLAGS = -Werror -Wextra -Wall #-g3 -fsanitize=address

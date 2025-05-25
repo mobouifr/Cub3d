@@ -1,172 +1,57 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/25 15:51:25 by mobouifr          #+#    #+#             */
+/*   Updated: 2025/05/25 16:50:51 by mobouifr         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 #include "libft.h"
 
-void print_gamevar(const t_game *g)
+int	map_char_valid(char c)
 {
-    printf("=== t_game contents ===\n");
-    printf("mapfile_path          : [%s]\n",   g->mapfile_path);
-    printf("no_path               : [%s]\n",   g->no_path);
-    printf("so_path               : [%s]\n",   g->so_path);
-    printf("we_path               : [%s]\n",   g->we_path);
-    printf("ea_path               : [%s]\n",   g->ea_path);
-    printf("floor_color           : [%d,%d,%d]\n",
-           g->floor_color[0], g->floor_color[1], g->floor_color[2]);
-    printf("ceiling_color         : [%d,%d,%d]\n",
-           g->ceiling_color[0], g->ceiling_color[1], g->ceiling_color[2]);
-	printf("floor_color_hex       : [%d]\n",   g->floor_color_hex);
-	printf("ceiling_color_hex     : [%d]\n",   g->ceiling_color_hex);
-	printf("map                   : [%p]\n",   (void*)g->map);
-    printf("map_width             : [%d]\n",   g->map_width);
-    printf("map_height            : [%d]\n",   g->map_height);
-    printf("player_x              : [%f]\n",   g->player_x);
-    printf("player_y              : [%f]\n",   g->player_y);
-    printf("player_dir            : [%c]\n",   g->player_dir ? g->player_dir        : '0');
-    printf("has_player_dir        : [%d]\n",   g->has_player_dir);
-    printf("has_no                : [%d]\n",   g->has_no);
-    printf("has_so                : [%d]\n",   g->has_so);
-    printf("has_we                : [%d]\n",   g->has_we);
-    printf("has_ea                : [%d]\n",   g->has_ea);
-    printf("has_floor             : [%d]\n",   g->has_floor);
-    printf("has_ceiling           : [%d]\n",   g->has_ceiling);
-    printf("========================\n");
+	return (c == 'N' || c == 'S' || c == 'E' || c == 'W');
+}
+void set_player_direction(t_game *gamevar, char c, int i)
+{
+	gamevar->player_dir = c;
+	gamevar->player_x = i;
+	gamevar->player_y = gamevar->map_height - 1;
+	gamevar->has_player_dir = 1;
 }
 
-int rgb_to_hex(int r, int g, int b)
+int line_closed_by_walls(char *str, t_data *data)
 {
-	return (r * 256 * 256) + (g * 256) + b;
-}
-
-// void	ft_free(char **arr)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	while (arr && arr[i])
-// 	{
-// 		free(arr[i]);
-// 		i++;
-// 	}
-// 	free(arr);
-// }
-
-int	line_is_empty(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (ft_isspace(str[i]))
-		i++;
-	if (str[i] == '\0')
-		return (1);
-	return (0);
-}
-
-void	valid_extention_check(t_game *game, t_data *data)
-{
-	int		i;
-	int		j;
-	char	*str;
-
-	i = ft_strlen(game->mapfile_path);
-	j = 4;
-	str = ".cub";
-	if (game->mapfile_path[i - 5] == '/' || i <= j)
+	int len;
+	char *trimmed_str;
+	
+	trimmed_str = ft_strtrim(str, " ", data);
+	len = ft_strlen_v2(trimmed_str);
+	if (trimmed_str[0] != '1' || trimmed_str[len - 1] != '1')
 	{
-		write(2, "Error Wrong file extension\n", 27);
-		ft_gc_free_all(&data->gc);
-		exit(1);
-	}
-	while (j >= 0)
-	{
-		if (game->mapfile_path[i] != str[j])
-		{
-			write(2, "Error Wrong file extension\n", 27);
-			ft_gc_free_all(&data->gc);
-			exit(1);
-		}
-		i--;
-		j--;
-	}
-}
-
-int	parse_rgb_color(int *color_code, char *str, t_data *data)
-{
-	char	**rgb;
-	int		i;
-
-	i = 0;
-	rgb = ft_split(str, ',', data);
-	if (!rgb || !rgb[0] || !rgb[1] || !rgb[2])
-	{
-		write(2, "rgb error\n", 10);
-		ft_gc_free_all(&data->gc);
-		exit(1);
-	}
-	while (i < 3)
-	{
-		color_code[i] = ft_atoi(rgb[i]);
-		if (color_code[i] < 0 || color_code[i] > 255)
-		{
-			write(2, "rgb range error\n", 16);
-			ft_gc_free_all(&data->gc);
-			exit(1);
-		}
-		i++;
-	}
-	return ((color_code[0] * 256 * 256) + (color_code[1] * 256) + color_code[2]);
-}
-
-int	has_direction(t_game *gamevar)
-{
-	if (gamevar->has_no >= 2 || gamevar->has_so >= 2 || gamevar->has_we >= 2
-		|| gamevar->has_ea >= 2 || gamevar->has_floor >= 2
-		|| gamevar->has_ceiling >= 2)
-	{
-		write(2, "direction error\n", 16);
+		write(2, "map error(map rows should be closed by walls)\n", 46);
 		return (0);
 	}
-	if (gamevar->has_no == 1 && gamevar->has_so == 1 && gamevar->has_we == 1
-		&& gamevar->has_ea == 1 && gamevar->has_floor == 1
-		&& gamevar->has_ceiling == 1)
-		gamevar->state = PARSE_MAP_STATE;
 	return (1);
 }
 
-int	ft_strlen_v2(char *str)
+int	map_row_is_valid(char *str, t_game *gamevar, t_data *data)
 {
 	int	i;
 
 	i = 0;
-	while (str[i] != '\n' && str[i] != '\0')
-	{
-		i++;
-	}
-	return (i);
-}
-
-int	map_is_valid(char *str, t_game *gamevar, t_data *data)
-{
-	int	i;
-	int len;
-	char *trimmed_str = ft_strtrim(str, " ", data);
-
-	i = 0;
-	len = ft_strlen_v2(trimmed_str);
 	while (str[i] != '\0' && str[i] != '\n')
 	{
-		if (trimmed_str[0] != '1' || trimmed_str[len - 1] != '1')
-		{
-			printf("trimmed_str : {%s}\n", trimmed_str);
-			write(2, "map error(map rows should be closed by walls)\n", 46);
+		if (!line_closed_by_walls(str, data))
 			return (0);
-		}
-		if ((str[i] == 'N' || str[i] == 'S' || str[i] == 'E' || str[i] == 'W')
-			&& gamevar->has_player_dir == 0)
+		if (map_char_valid(str[i]) && gamevar->has_player_dir == 0)
 		{
-			gamevar->player_dir = str[i];
-			gamevar->player_x = i;
-			gamevar->player_y = gamevar->map_height - 1;
-			gamevar->has_player_dir = 1;
+			set_player_direction(gamevar, str[i], i);
 			i++;
 			if (i > gamevar->map_width)
 				gamevar->map_width++;
@@ -187,64 +72,7 @@ int	map_is_valid(char *str, t_game *gamevar, t_data *data)
 	return (1);
 }
 
-char *set_terminator(char *str)
-{
-	int i;
 
-	i = 0;
-	while (str[i] != '\n')
-	{
-		i++;
-	}
-	str[i] = '\0';
-	
-	return (str);
-}
-void	var_init(t_game *gamevar)
-{
-	int	i;
-
-	i = 0;
-	gamevar->mapfile_path = NULL;
-	gamevar->no_path = NULL;
-	gamevar->so_path = NULL;
-	gamevar->we_path = NULL;
-	gamevar->ea_path = NULL;
-	while (i < 3)
-	{
-		gamevar->floor_color[i] = -1;
-		gamevar->ceiling_color[i] = -1;
-		i++;
-	}
-	gamevar->floor_color_hex = 0;
-	gamevar->ceiling_color_hex = 0;
-	gamevar->map = NULL;
-	gamevar->map_width = 0;
-	gamevar->map_height = 0;
-	gamevar->player_x = -1;
-	gamevar->player_y = -1;
-	gamevar->player_dir = '\0';
-	gamevar->has_player_dir = 0;
-	gamevar->has_no = 0;
-	gamevar->has_so = 0;
-	gamevar->has_we = 0;
-	gamevar->has_ea = 0;
-	gamevar->has_floor = 0;
-	gamevar->has_ceiling = 0;
-	gamevar->state = INITIAL;
-}
-
-void check_file_exists(char *filepath, t_data *data)
-{
-    int fd = open(filepath, O_RDONLY);
-    if (fd == -1)
-    {
-		write(2, "Error texture file path not found\n", 34);
-		ft_gc_free_all(&data->gc);
-		exit(1);
-    }
-    close(fd);
-}
 
 void	parse_line(int fd, t_game *gamevar, t_data *data)
 {
@@ -313,7 +141,7 @@ void	parse_line(int fd, t_game *gamevar, t_data *data)
 		if (gamevar->state == PARSE_MAP_STATE)
 		{
 			gamevar->map_height++;
-			if (!map_is_valid(line, gamevar, data))
+			if (!map_row_is_valid(line, gamevar, data))
 			{
 				close(fd);
 				ft_gc_free_all(&data->gc);
@@ -343,7 +171,6 @@ void	fill_map(t_game *gamevar, t_data *data)
 	int		j;
 
 	i = 0;
-	printf("gamevar->map_width : %d\n", gamevar->map_width);
 	gamevar->map = ft_gc_malloc(&data->gc, sizeof(char *) * (gamevar->map_height + 1));
 	if (gamevar->map == NULL)
 	{
@@ -462,7 +289,7 @@ t_game	*parser(int argc, char **argv, t_data *data)
 		ft_gc_free_all(&data->gc);
 		exit (1);
 	}
-	var_init(gamevar);
+	vars_init(gamevar);
 	
 	gamevar->mapfile_path = argv[1];
 	valid_extention_check(gamevar, data);
