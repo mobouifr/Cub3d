@@ -6,7 +6,7 @@
 /*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 18:36:38 by mobouifr          #+#    #+#             */
-/*   Updated: 2025/05/25 18:39:16 by mobouifr         ###   ########.fr       */
+/*   Updated: 2025/05/25 21:28:19 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ static void	validate_parts_format(char **parts, t_data *data)
 		exit(1);
 	}
 }
+
 static void	handle_texture_path(char **dest, char *path, int *flag,
 		t_data *data)
 {

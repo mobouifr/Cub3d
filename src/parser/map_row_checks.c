@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   map_row_check.c                                    :+:      :+:    :+:   */
+/*   map_row_checks.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 17:09:01 by mobouifr          #+#    #+#             */
-/*   Updated: 2025/05/25 17:09:53 by mobouifr         ###   ########.fr       */
+/*   Updated: 2025/05/25 21:28:01 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,13 @@ static int	map_char_valid(char c)
 {
 	return (c == 'N' || c == 'S' || c == 'E' || c == 'W');
 }
+
 static void	check_row_len(t_game *gamevar, int i)
 {
 	if (i > gamevar->map_width)
 		gamevar->map_width++;
 }
+
 static void	set_player_direction(t_game *gamevar, char c, int i)
 {
 	gamevar->player_dir = c;
@@ -47,7 +49,7 @@ static int	line_closed_by_walls(char *str, t_data *data)
 
 int	map_row_is_valid(char *str, t_game *gamevar, t_data *data)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (str[i] != '\0' && str[i] != '\n')

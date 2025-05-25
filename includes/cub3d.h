@@ -6,7 +6,7 @@
 /*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 11:49:22 by mamir             #+#    #+#             */
-/*   Updated: 2025/05/25 18:51:46 by mobouifr         ###   ########.fr       */
+/*   Updated: 2025/05/25 21:14:14 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,6 +162,12 @@ int						close_window(t_data *data);
 void					my_mlx_pixel_put(t_data *data, int x, int y, int color);
 char					*get_next_line(int fd, t_data *data);
 void					print_gamevar(const t_game *g);
+void					allocate_map(t_game *gamevar, t_data *data);
+void					skip_config_lines(int fd, t_data *data);
+void					validate_map_borders(t_game *gamevar, t_data *data);
+void					exit_error(char *str, t_data *data);
+void					fill_map(t_game *gamevar, t_data *data);
+
 /*Garbagr Collector*/
 void					*ft_gc_malloc(t_gc *gc, size_t size);
 void					ft_gc_free_all(t_gc *gc);

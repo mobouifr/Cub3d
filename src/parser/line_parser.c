@@ -6,7 +6,7 @@
 /*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 18:50:09 by mobouifr          #+#    #+#             */
-/*   Updated: 2025/05/25 18:50:57 by mobouifr         ###   ########.fr       */
+/*   Updated: 2025/05/25 21:28:33 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static void	validate_map_and_player_presence(int fd, t_game *gamevar,
 
 void	parse_line(int fd, t_game *gamevar, t_data *data)
 {
-	char *line;
+	char	*line;
 
 	line = get_next_line(fd, data);
 	while (line != NULL)
