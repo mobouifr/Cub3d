@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mamir <mamir@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 11:52:35 by mamir             #+#    #+#             */
-/*   Updated: 2025/05/25 23:49:53 by mobouifr         ###   ########.fr       */
+/*   Updated: 2025/05/26 13:33:56 by mamir            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,9 @@ int	main(int argc, char **argv)
 	data.colors->floor_color_hex = parsed->floor_color_hex;
 	mlx_start(&data);
 	safe_load_texture(&data, &data.textures[0], parsed->no_path);
-	safe_load_texture(&data, &data.textures[1], parsed->no_path);
-	safe_load_texture(&data, &data.textures[2], parsed->no_path);
-	safe_load_texture(&data, &data.textures[3], parsed->no_path);
+	safe_load_texture(&data, &data.textures[1], parsed->so_path);
+	safe_load_texture(&data, &data.textures[2], parsed->ea_path);
+	safe_load_texture(&data, &data.textures[3], parsed->we_path);
 	start_game(&data);
 	ft_gc_free_all(&data.gc);
 	return (0);

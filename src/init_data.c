@@ -6,7 +6,7 @@
 /*   By: mobouifr <mobouifr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 11:03:32 by mamir             #+#    #+#             */
-/*   Updated: 2025/05/24 23:38:52 by mobouifr         ###   ########.fr       */
+/*   Updated: 2025/05/26 17:49:55 by mobouifr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	initialize_data(t_data *data)
 	data->player = ft_gc_malloc(&data->gc, sizeof(t_player));
 	data->map = ft_gc_malloc(&data->gc, sizeof(t_map));
 	data->colors = ft_gc_malloc(&data->gc, sizeof(t_colors));
-	if (!data->mlx || !data->player || !data->map)
+	if (!data->mlx || !data->player || !data->map || !data->colors)
 	{
 		printf("Memory allocation failed\n");
 		exit(1);
