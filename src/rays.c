@@ -15,7 +15,6 @@
 double	cast_ray(t_data *data, double ray_angle, int *side_hit)
 {
 	t_dda	dda;
-	int		hit;
 	double	dist;
 
 	ray_angle = fmod(ray_angle, 2 * M_PI);
@@ -26,7 +25,7 @@ double	cast_ray(t_data *data, double ray_angle, int *side_hit)
 	dda.delta_y = fabs(1 / dda.dir_y);
 	init_step_dist_x(data, &dda);
 	init_step_dist_y(data, &dda);
-	hit = dda_loop(data, &dda);
+	(void)dda_loop(data, &dda);
 	*side_hit = dda.side_hit;
 	if (dda.side_hit == 0)
 		dist = (dda.map_x - data->player->player_x + (1 - dda.step_x) / 2)

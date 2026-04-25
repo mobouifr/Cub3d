@@ -40,26 +40,49 @@ CFLAGS = -Werror -Wextra -Wall #-g3 -fsanitize=address
 OBJ = $(SRC:.c=.o)
 INC = -I./includes/
 
-# Directories for miniLibX
-MLX_DIR = mlx_linux
-MLX_LIB = -lmlx_Linux
+# Detect OS for miniLibX
+UNAME := $(shell uname)
+ifeq ($(UNAME), Linux)
+	MLX_DIR = minilibx-linux
+	MLX_LIB = -lmlx_Linux
+	LIBS = -L$(MLX_DIR) $(MLX_LIB) -lXext -lX11 -lm -lz
+	INC_MLX = -I$(MLX_DIR)
+	MLX_TARGET = $(MLX_DIR)/libmlx_Linux.a
+else
+	ifeq ($(METAL), 1)
+		MLX_DIR = minilibx_macos_metal/minilibx_mms_20200219
+		LIBS = -L$(MLX_DIR) -lmlx -framework Metal -framework AppKit
+		INC_MLX = -I$(MLX_DIR)
+		MLX_TARGET = $(MLX_DIR)/libmlx.dylib
+	else
+		MLX_DIR = minilibx_macos_opengl/minilibx_opengl_20191021
+		LIBS = -L$(MLX_DIR) -lmlx -framework OpenGL -framework AppKit
+		INC_MLX = -I$(MLX_DIR)
+		MLX_TARGET = $(MLX_DIR)/libmlx.a
+	endif
+endif
 
-# Libraries
-LIBS = -L$(MLX_DIR) $(MLX_LIB) -L/usr/lib -lXext -lX11 -lm -lz
+all: $(MLX_TARGET) $(NAME)
 
-all: $(NAME)
+$(MLX_TARGET):
+	$(MAKE) -C $(MLX_DIR)
+	@if [ "$(METAL)" = "1" ] && [ "$(UNAME)" != "Linux" ]; then cp $(MLX_DIR)/libmlx.dylib libmlx.dylib; fi
 
 $(NAME): $(OBJ)
 	$(CC) $(CFLAGS) $(OBJ) $(LIBS) -o $(NAME)
 
 %.o: %.c
-	$(CC) $(CFLAGS) -I/usr/include -I$(MLX_DIR) -O3 -c $< -o $@
+	$(CC) $(CFLAGS) $(INC_MLX) -O3 -c $< -o $@
 
 clean:
 	rm -rf $(OBJ)
+	@if [ -d "minilibx-linux" ]; then $(MAKE) -C minilibx-linux clean || true; fi
+	@if [ -d "minilibx_macos_opengl/minilibx_opengl_20191021" ]; then $(MAKE) -C minilibx_macos_opengl/minilibx_opengl_20191021 clean || true; fi
+	@if [ -d "minilibx_macos_metal/minilibx_mms_20200219" ]; then $(MAKE) -C minilibx_macos_metal/minilibx_mms_20200219 clean || true; fi
 
 fclean: clean
 	rm -rf $(NAME)
+	rm -rf libmlx.dylib
 
 re: fclean all
 
