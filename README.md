@@ -1,8 +1,11 @@
 *This project has been created as part of the 42 curriculum by mobouifr, mamir.*
 <div align="center">
+
 # cub3D
 ### A first-person raycaster built from a 2D map — inspired by Wolfenstein 3D.
+
 </div>
+
 <div align="center">
 
 ![Language](https://img.shields.io/badge/language-C-00599C?style=flat-square&logo=c&logoColor=white)
